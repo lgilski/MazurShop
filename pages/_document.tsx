@@ -1,13 +1,22 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang='en'>
       <Head />
       <body>
         <Main />
         <NextScript />
+        <script
+          defer
+          type='module'
+          src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js'
+        ></script>
+        <script
+          defer
+          src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js'
+        ></script>
       </body>
     </Html>
-  )
+  );
 }
