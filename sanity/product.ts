@@ -1,3 +1,5 @@
+import { type } from 'os';
+
 export default {
   name: 'product',
   title: 'Product',
@@ -20,8 +22,18 @@ export default {
     {
       name: 'price',
       title: 'Price',
-      description: 'Without the currency!!',
       type: 'number',
+    },
+    {
+      name: 'discount',
+      title: 'Discount',
+      description: 'Type only the number',
+      type: 'number',
+    },
+    {
+      name: 'shouldBeOnTheBest',
+      title: 'Should be on the best?',
+      type: 'boolean',
     },
     {
       name: 'leftInStock',
