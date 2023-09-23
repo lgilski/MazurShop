@@ -2,7 +2,7 @@ import Product from './Product';
 import { SanityDocument } from 'next-sanity';
 
 function BestProducts({ data }: { data: SanityDocument[] }) {
-  console.log(data);
+  // console.log(data);
 
   return (
     <section className='max-w-7xl mx-auto mb-8'>

@@ -15,6 +15,7 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'hero-image':
           "linear-gradient(to right top, #05400ABF, #207227BF), url('../assets/images/andrew-s-ouo1hbizWwo-unsplash-big.jpg')",
+        'detail-image': 'linear-gradient(to right top, #C1EAC566, #207227BF)',
       },
       colors: {
         ...colors,

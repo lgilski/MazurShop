@@ -9,10 +9,14 @@ import Features from '@/components/Features';
 import BestProducts from '@/components/BestProducts';
 
 export const postsQuery = groq`*[_type == "product" && defined(slug.current) && shouldBeOnTheBest == true]{
-  details, image, leftInStock, name, price, discount, slug, _id
+  image, leftInStock, name, price, discount, slug, _id
 }`;
 
 export default function Home({ data }: { data: SanityDocument[] }) {
+  // client
+  //   .listen(postsQuery)
+  //   .subscribe(async update => await client.fetch(postsQuery));
+
   return (
     <>
       <Head>

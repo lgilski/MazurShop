@@ -4,6 +4,9 @@ import type { AppProps } from 'next/app';
 
 import { Roboto } from 'next/font/google';
 
+import store from '@/store';
+import { Provider } from 'react-redux';
+
 const roboto = Roboto({
   subsets: ['latin'],
   weight: ['100', '300', '400', '500', '700', '900'],
@@ -13,12 +16,12 @@ const roboto = Roboto({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <Provider store={store}>
       <Layout>
-        <main className={`${roboto.variable} font-roboto bg-grey-050`}>
+        <main className={`${roboto.variable} font-roboto `}>
           <Component {...pageProps} />
         </main>
       </Layout>
-    </>
+    </Provider>
   );
 }
