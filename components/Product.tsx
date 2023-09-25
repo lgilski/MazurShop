@@ -7,19 +7,25 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import SelectQuantity from './SelectQuantity';
 import Price from './Price';
-import { client } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '@/store/cart';
+import { ProductType } from '@/types/types';
 
-export default function Product({ product }: { product: SanityDocument }) {
-  // console.log(product);
-
-  // const postQuery = groq`*[_type == "product"]`;
+export default function Product({ product }: { product: ProductType }) {
   const ref = useRef<HTMLInputElement | null>(null);
   const source = urlForImage(product.image[0]);
 
-  // useEffect(() => {
-  // client.listen(postQuery).subscribe(update => console.log(update));
-  // }, []);
+  const dispatch = useDispatch();
+
+  const sendAddToCart = function () {
+    if (product.leftInStock === 0) return;
+
+    // if(product.leftInStock)
+
+    dispatch(
+      cartActions.addToCart({ product, quantity: Number(ref.current?.value) })
+    );
+  };
 
   return (
     <div className='flex flex-col bg-white-100 relative w-full mx-auto rounded-xl overflow-hidden shadow-xl box-border border-2 border-solid border-grey-100'>
@@ -52,7 +58,10 @@ export default function Product({ product }: { product: SanityDocument }) {
         </div>
         <div className='flex justify-between gap-4 mt-auto pt-8'>
           <SelectQuantity ref={ref} product={product} />
-          <button className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200'>
+          <button
+            onClick={sendAddToCart}
+            className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200'
+          >
             Add to cart
           </button>
         </div>

@@ -17,11 +17,10 @@ const roboto = Roboto({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <Layout>
-        <main className={`${roboto.variable} font-roboto `}>
-          <Component {...pageProps} />
-        </main>
-      </Layout>
+      <main className={`${roboto.variable} font-roboto `}>
+        <Layout />
+        <Component {...pageProps} />
+      </main>
     </Provider>
   );
 }

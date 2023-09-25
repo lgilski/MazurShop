@@ -2,7 +2,6 @@ import { SanityDocument } from '@sanity/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { groq } from 'next-sanity';
 import { client } from '../../sanity/lib/client';
-import { useRouter } from 'next/router';
 import ProductDetails from '@/components/ProductDetails';
 
 export const productQuery = groq`*[_type == "product" && slug.current == $slug][0]{
@@ -38,7 +37,11 @@ export default function ProductDetailsPage({
 }: {
   product: SanityDocument;
 }) {
-  console.log(product);
+  // client.listen(productQuery, queryParams).subscribe(async update => {
+  //   console.log(update);
+
+  //   dispatch(cartActions.updateProducts(update));
+  // });
 
   return <ProductDetails product={product} />;
 }

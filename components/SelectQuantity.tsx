@@ -1,30 +1,81 @@
+import { cartActions } from '@/store/cart';
+import { ItemType } from '@/types/types';
 import { SanityDocument } from 'next-sanity';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const SelectQuantity = forwardRef(function (
-  { product }: { product: SanityDocument },
+  { product, item }: { product?: SanityDocument; item?: ItemType },
   ref
 ) {
+  const dispatch = useDispatch();
+
   const [numberToAdd, setNumberToAdd] = useState<number | string>(1);
 
   const increment = function () {
-    if (numberToAdd >= product.leftInStock) return;
-    setNumberToAdd(prevState => Number(prevState) + 1);
+    if (item) {
+      if (item.quantity >= item.product.leftInStock) return;
+
+      dispatch(
+        cartActions.updateQuantity({
+          product: item.product,
+          quantity: Number(item.quantity) + 1,
+        })
+      );
+    } else if (!item) {
+      if (numberToAdd >= product?.leftInStock) return;
+      setNumberToAdd(prevState => Number(prevState) + 1);
+    }
   };
   const decrement = function () {
-    if (numberToAdd === 1) return;
-    setNumberToAdd(prevState => Number(prevState) - 1);
+    if (item) {
+      if (item.quantity === 1) return;
+
+      dispatch(
+        cartActions.updateQuantity({
+          product: item.product,
+          quantity: Number(item.quantity) - 1,
+        })
+      );
+    } else if (!item) {
+      if (numberToAdd === 1) return;
+      setNumberToAdd(prevState => Number(prevState) - 1);
+    }
   };
 
   function inputChangeHandler() {
-    if (Number(ref?.current?.value) > product.leftInStock)
-      return setNumberToAdd(product.leftInStock);
+    if (item) {
+      if (Number(ref?.current?.value) > item.product.leftInStock)
+        return dispatch(
+          cartActions.updateQuantity({
+            product: item.product,
+            quantity: item.product.leftInStock,
+          })
+        );
 
-    setNumberToAdd(ref?.current!.value);
+      dispatch(
+        cartActions.updateQuantity({
+          product: item.product,
+          quantity: ref?.current!.value,
+        })
+      );
+    } else if (!item) {
+      if (Number(ref?.current?.value) > product.leftInStock)
+        return setNumberToAdd(product?.leftInStock);
+
+      setNumberToAdd(ref?.current!.value);
+    }
   }
 
   function inputBlurHandler() {
-    if (Number(ref?.current?.value) === 0) return setNumberToAdd(1);
+    if (item) {
+      if (Number(ref?.current?.value) === 0)
+        return dispatch(
+          cartActions.updateQuantity({ product: item.product, quantity: 1 })
+        );
+    } else if (!item) {
+      if (Number(ref?.current?.value) === 0) return setNumberToAdd(1);
+    }
   }
 
   return (
@@ -41,9 +92,13 @@ const SelectQuantity = forwardRef(function (
         ref={ref}
         type='number'
         min={'1'}
-        max={product.leftInStock.toString()}
-        className='w-10 inline-block text-center text-xl leading-none align-middle bg-inherit outline-none'
-        value={numberToAdd}
+        max={
+          product?.leftInStock
+            ? product?.leftInStock.toString()
+            : item?.product.leftInStock.toString()
+        }
+        className='font-roboto w-10 inline-block text-center text-xl leading-none align-middle bg-inherit outline-none'
+        value={item ? item.quantity : numberToAdd}
       />
       <button
         onClick={increment}

@@ -7,31 +7,38 @@ import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
 import Features from '@/components/Features';
 import BestProducts from '@/components/BestProducts';
+import { useDispatch } from 'react-redux';
+import { productActions } from '@/store/product';
 
-export const postsQuery = groq`*[_type == "product" && defined(slug.current) && shouldBeOnTheBest == true]{
-  image, leftInStock, name, price, discount, slug, _id
+export const postsQuery = groq`*[_type == "product" && defined(slug.current)]{
+  image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
 }`;
-
-export default function Home({ data }: { data: SanityDocument[] }) {
-  // client
-  //   .listen(postsQuery)
-  //   .subscribe(async update => await client.fetch(postsQuery));
-
-  return (
-    <>
-      <Head>
-        <title>uwu</title>
-      </Head>
-      {/* <Navigation /> */}
-      <Hero />
-      <Features />
-      <BestProducts data={data} />
-    </>
-  );
-}
 
 export const getStaticProps = async () => {
   const data = await client.fetch(postsQuery);
 
   return { props: { data } };
 };
+
+export default function Home({ data }: { data: SanityDocument[] }) {
+  const dispatch = useDispatch();
+
+  dispatch(productActions.setProducts(data));
+
+  client.listen(postsQuery).subscribe(async update => {
+    console.log(update);
+
+    dispatch(productActions.updateProducts(update));
+  });
+
+  return (
+    <>
+      <Head>
+        <title>uwu</title>
+      </Head>
+      <Hero />
+      <Features />
+      <BestProducts />
+    </>
+  );
+}

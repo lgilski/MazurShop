@@ -1,6 +1,6 @@
 function Hero() {
   return (
-    <section className='bg-hero-image bg-cover bg-center h-[800px] w-full'>
+    <section className='bg-hero-image bg-cover bg-center h-[800px] w-full mt-[68px]'>
       <div className='max-w-7xl h-full flex items-center justify-left m-auto'>
         <div className='max-w-4xl text-left'>
           <h2 className='text-7xl text-green-050 font-extrabold mb-6'>
