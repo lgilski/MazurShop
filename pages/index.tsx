@@ -26,7 +26,7 @@ export default function Home({ data }: { data: SanityDocument[] }) {
   dispatch(productActions.setProducts(data));
 
   client.listen(postsQuery).subscribe(async update => {
-    console.log(update);
+    // console.log(update);
 
     dispatch(productActions.updateProducts(update));
   });

@@ -36,9 +36,13 @@ const cartSlice = createSlice({
 
       return state;
     },
-    // updateTotalCost(state, action){
-    //   state.totalCost
-    // },
+    deleteItemFromCart(state, action) {
+      state.items = state.items.filter(
+        item => item.product._id !== action.payload.product._id
+      );
+
+      return state;
+    },
     updateQuantity(state, action) {
       state.items.find(
         item => item.product._id === action.payload.product._id

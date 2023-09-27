@@ -10,6 +10,7 @@ import Price from './Price';
 import SelectQuantity from './SelectQuantity';
 import CartItem from './CartItem';
 import { WholeState } from '@/types/types';
+import getStripe from '@/helpers/getStripe';
 
 export const Blur = () => {
   const ref = useRef<Element | null>(null);
@@ -40,7 +41,29 @@ function Cart() {
 
   const [totalCost, setTotalCost] = useState(0);
 
-  console.log(items);
+  const handleCheckout = async function () {
+    const stripe = await getStripe();
+
+    const response = await fetch('/api/stripe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(items),
+    });
+
+    if (response.status === 500) return;
+
+    const data = await response.json();
+
+    // console.log(items, JSON.stringify(items));
+
+    console.log(data);
+
+    stripe.redirectToCheckout({ sessionId: data.id });
+  };
+
+  // console.log(items);
   // let totalCostToAdd: number;
 
   // for (let i = 0; i < items.length; i++) {
@@ -57,7 +80,7 @@ function Cart() {
       ).toFixed(2)
     );
 
-    console.log(totalCostToAdd);
+    // console.log(totalCostToAdd);
 
     setTotalCost(
       totalCostToAdd.reduce((accumulator, currentValue) => {
@@ -97,9 +120,14 @@ function Cart() {
                 {totalCost}zł
               </span>
             </p>
-            <button className='w-full text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 '>
+            {/* <form className='w-full flex-grow'> */}
+            <button
+              onClick={handleCheckout}
+              className='w-full text-xl bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 '
+            >
               Go to checkout
             </button>
+            {/* </form> */}
           </div>
         )}
       </div>

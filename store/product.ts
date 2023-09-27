@@ -16,7 +16,7 @@ const productSlice = createSlice({
       return state;
     },
     updateProducts(state, action) {
-      console.log(action.payload);
+      // console.log(action.payload);
 
       const indexToChange = state.products.findIndex(
         product => product._id === action.payload.documentId

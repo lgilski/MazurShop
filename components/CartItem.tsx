@@ -7,17 +7,11 @@ import { urlForImage } from '@/sanity/lib/image';
 
 import Link from 'next/link';
 import { ItemType } from '@/types/types';
-import product from '@/sanity/product';
 
 function CartItem({ item }: { item: ItemType }) {
   const dispatch = useDispatch();
 
   const ref = useRef<HTMLInputElement | null>(null);
-
-  console.log(
-    item.quantity,
-    item.product.price * (1 - item.product.discount / 100)
-  );
 
   const cost =
     item.quantity *
@@ -54,7 +48,10 @@ function CartItem({ item }: { item: ItemType }) {
               {cost.toFixed(2)}zł
             </p>
           </div>
-          <button className='w-6 h-6 [&_ion-icon]:w-full [&_ion-icon]:h-full mr-6'>
+          <button
+            onClick={() => dispatch(cartActions.deleteItemFromCart(item))}
+            className='w-6 h-6 [&_ion-icon]:w-full [&_ion-icon]:h-full mr-6 hover:text-red-500 duration-200'
+          >
             <ion-icon name='trash-outline' />
           </button>
         </div>
