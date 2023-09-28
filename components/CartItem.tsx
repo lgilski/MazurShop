@@ -11,7 +11,7 @@ import { ItemType } from '@/types/types';
 function CartItem({ item }: { item: ItemType }) {
   const dispatch = useDispatch();
 
-  const ref = useRef<HTMLInputElement | null>(null);
+  const ref = useRef<HTMLInputElement | null | undefined>(null);
 
   const cost =
     item.quantity *

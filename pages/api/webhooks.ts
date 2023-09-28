@@ -2,7 +2,7 @@
 
 // const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-const handler = async (req, res) => {
+const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
     console.log(req);
 

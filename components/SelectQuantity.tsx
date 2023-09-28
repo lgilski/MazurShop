@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 const SelectQuantity = forwardRef(function (
   { product, item }: { product?: ProductType; item?: ItemType },
-  ref
+  ref: any
 ) {
   const dispatch = useDispatch();
 
@@ -59,8 +59,8 @@ const SelectQuantity = forwardRef(function (
         })
       );
     } else if (!item) {
-      if (Number(ref?.current?.value) > product.leftInStock)
-        return setNumberToAdd(product?.leftInStock);
+      if (Number(ref?.current?.value) > product!.leftInStock)
+        return setNumberToAdd(product?.leftInStock!);
 
       setNumberToAdd(ref?.current!.value);
     }
