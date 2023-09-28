@@ -13,7 +13,7 @@ import { ProductType } from '@/types/types';
 
 export default function Product({ product }: { product: ProductType }) {
   const ref = useRef<HTMLInputElement | null>(null);
-  const source = urlForImage(product.image[0]);
+  const source = urlForImage(product.image[0]).toString();
 
   const dispatch = useDispatch();
 

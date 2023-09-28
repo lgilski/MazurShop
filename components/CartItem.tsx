@@ -25,7 +25,7 @@ function CartItem({ item }: { item: ItemType }) {
     <div className='flex gap-6' key={item.product._id}>
       <img
         className='w-60 aspect-square object-cover rounded-md'
-        src={urlForImage(item.product.image[0])}
+        src={urlForImage(item.product.image[0]).toString()}
       />
       <div className='flex flex-col flex-grow'>
         <Link
