@@ -16,8 +16,10 @@ function CartItem({ item }: { item: ItemType }) {
   const cost =
     item.quantity *
     (item.product.discount
-      ? (item.product.price * (1 - item.product.discount / 100)).toFixed(2)
-      : item.product.price.toFixed(2));
+      ? Number(
+          (item.product.price * (1 - item.product.discount / 100)).toFixed(2)
+        )
+      : Number(item.product.price.toFixed(2)));
 
   return (
     <div className='flex gap-6' key={item.product._id}>
