@@ -1,11 +1,10 @@
 import { cartActions } from '@/store/cart';
-import { ItemType } from '@/types/types';
-import { SanityDocument } from 'next-sanity';
+import { ItemType, ProductType } from '@/types/types';
 import { forwardRef, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const SelectQuantity = forwardRef(function (
-  { product, item }: { product?: SanityDocument; item?: ItemType },
+  { product, item }: { product?: ProductType; item?: ItemType },
   ref
 ) {
   const dispatch = useDispatch();
