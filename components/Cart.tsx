@@ -76,7 +76,9 @@ function Cart() {
     const totalCostToAdd = items.map(item =>
       (
         item.quantity *
-        (item.product.price * (1 - item.product.discount / 100)).toFixed(2)
+        Number(
+          (item.product.price * (1 - item.product.discount / 100)).toFixed(2)
+        )
       ).toFixed(2)
     );
 
