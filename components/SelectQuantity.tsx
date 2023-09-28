@@ -22,7 +22,7 @@ const SelectQuantity = forwardRef(function (
         })
       );
     } else if (!item) {
-      if (numberToAdd >= product?.leftInStock) return;
+      if (Number(numberToAdd) >= Number(product?.leftInStock)) return;
       setNumberToAdd(prevState => Number(prevState) + 1);
     }
   };

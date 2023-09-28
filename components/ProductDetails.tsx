@@ -4,8 +4,9 @@ import SelectQuantity from './SelectQuantity';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '@/store/cart';
+import { ProductType } from '@/types/types';
 
-function ProductDetails({ product }) {
+function ProductDetails({ product }: { product: ProductType }) {
   console.log(product);
 
   const [imgIndex, setImgIndex] = useState(0);

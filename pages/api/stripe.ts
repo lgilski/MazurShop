@@ -25,8 +25,11 @@ export default async function handler(req, res) {
             .replace('-jpg', '.jpg');
 
           const priceToDisplay = item.product.discount
-            ? (item.product.price * (1 - item.product.discount / 100)).toFixed(
-                2
+            ? Number(
+                (
+                  item.product.price *
+                  (1 - item.product.discount / 100)
+                ).toFixed(2)
               ) * 100
             : item.product.price * 100;
 
