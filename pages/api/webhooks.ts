@@ -3,8 +3,6 @@ import { groq } from 'next-sanity';
 
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
-// const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
 export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
 }`;
@@ -12,11 +10,6 @@ export const productsQuery = groq`*[_type == "product" && defined(slug.current)]
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
     // console.log(req.body);
-
-    // const buf = await buffer(req);
-    // const sig = req.headers['stripe-signature'];
-
-    // let event;
 
     //   client
     // .patch('bike-123') // Document ID to patch
@@ -31,34 +24,37 @@ const handler = async (req: any, res: any) => {
 
     // console.log('LINE ITEM: ', listLineItems, data);
 
+    listLineItems.data.forEach(async (boughtItem: any) => {
+      const boughtItemData = data.find(
+        (product: any) => product.name === boughtItem.description
+      );
+
+      console.log('BOUGHT ITEM: ', boughtItem);
+      console.log('BOUGHT ITEM DATA: ', boughtItemData);
+
+      // DECREMENT THE STOCK!!!!!
+
+      client
+        .patch(boughtItemData._id) // Document ID to patch
+        .dec({ leftInStock: boughtItem.quantity })
+        .commit() // Perform the patch and return a promise
+        .then(updatedProduct => {
+          console.log('Hurray, the product is updated! New document:');
+          console.log(updatedProduct);
+        })
+        .catch(err => {
+          console.error('Oh no, the update failed: ', err.message);
+        });
+    });
+
     try {
-      listLineItems.data.forEach(async (boughtItem: any) => {
-        const boughtItemData = data.find(
-          (product: any) => product.name === boughtItem.description
-        );
-
-        console.log('BOUGHT ITEM: ', boughtItem);
-        console.log('BOUGHT ITEM DATA: ', boughtItemData);
-
-        client
-          .patch(boughtItemData._id) // Document ID to patch
-          .dec({ leftInStock: boughtItem.quantity })
-          .commit() // Perform the patch and return a promise
-          .then(updatedProduct => {
-            console.log('Hurray, the product is updated! New document:');
-            console.log(updatedProduct);
-          })
-          .catch(err => {
-            console.error('Oh no, the update failed: ', err.message);
-          });
-      });
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
     }
 
-    res.json({ received: true, data: listLineItems });
+    res.json({ received: true });
   } else {
     res.setHeader('Allow', 'POST');
     res.status(405).end('Method Not Allowed');
