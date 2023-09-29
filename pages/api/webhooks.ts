@@ -40,10 +40,17 @@ const handler = async (req: any, res: any) => {
         console.log('BOUGHT ITEM: ', boughtItem);
         console.log('BOUGHT ITEM DATA: ', boughtItemData);
 
-        await client
+        client
           .patch(boughtItemData._id) // Document ID to patch
           .dec({ leftInStock: boughtItem.quantity })
-          .commit(); // Perform the patch and return a promise
+          .commit() // Perform the patch and return a promise
+          .then(updatedProduct => {
+            console.log('Hurray, the product is updated! New document:');
+            console.log(updatedProduct);
+          })
+          .catch(err => {
+            console.error('Oh no, the update failed: ', err.message);
+          });
       });
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
     } catch (err: any) {
