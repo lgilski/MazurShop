@@ -35,9 +35,11 @@ const handler = async (req: any, res: any) => {
       // DECREMENT THE STOCK!!!!!
 
       client
-        .patch(boughtItemData._id) // Document ID to patch
-        .dec({ leftInStock: boughtItem.quantity })
-        .commit() // Perform the patch and return a promise
+        // .patch(boughtItemData._id)
+        // .dec({ leftInStock: boughtItem.quantity })
+        .patch('192f82dd-2ad0-409b-8002-e2f27896477c')
+        .dec({ leftInStock: 1 })
+        .commit()
         .then(updatedProduct => {
           console.log('Hurray, the product is updated! New document:');
           console.log(updatedProduct);
