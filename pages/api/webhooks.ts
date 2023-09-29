@@ -12,10 +12,7 @@ const handler = async (req: any, res: any) => {
     // let event;
 
     const listLineItems = await stripe.checkout.sessions.listLineItems(
-      req.body.data.object.id,
-      function (err: any, lineItems: any) {
-        return lineItems;
-      }
+      req.body.data.object.id
     );
 
     console.log('LINE ITEM: ', listLineItems);
