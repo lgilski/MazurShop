@@ -29,9 +29,9 @@ const handler = async (req: any, res: any) => {
 
     const data = await client.fetch(productsQuery);
 
-    listLineItems.data.forEach(boughtItem => {
+    listLineItems.data.forEach((boughtItem: any) => {
       const boughtItemData = data.find(
-        product => product.name === boughtItem.description
+        (product: any) => product.name === boughtItem.description
       );
 
       client
