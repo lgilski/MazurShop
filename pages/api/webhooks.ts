@@ -4,7 +4,7 @@ const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
-    console.log(req);
+    console.log(req.body);
 
     // const buf = await buffer(req);
     // const sig = req.headers['stripe-signature'];
@@ -17,6 +17,8 @@ const handler = async (req: any, res: any) => {
         return lineItems;
       }
     );
+
+    console.log('LINE ITEM: ', listLineItems);
 
     try {
       // stripe.checkout.sessions.listLineItems(req.data.object.id)
