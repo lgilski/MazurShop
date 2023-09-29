@@ -7,7 +7,7 @@ import { cartActions } from '@/store/cart';
 import { ProductType } from '@/types/types';
 
 function ProductDetails({ product }: { product: ProductType }) {
-  console.log(product);
+  // console.log(product);
 
   const [imgIndex, setImgIndex] = useState(0);
   const dispatch = useDispatch();

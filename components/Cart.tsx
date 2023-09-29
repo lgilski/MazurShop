@@ -58,7 +58,7 @@ function Cart() {
 
     // console.log(items, JSON.stringify(items));
 
-    console.log(data);
+    // console.log(data);
 
     stripe.redirectToCheckout({ sessionId: data.id });
   };
