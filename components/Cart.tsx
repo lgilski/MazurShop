@@ -11,6 +11,9 @@ import SelectQuantity from './SelectQuantity';
 import CartItem from './CartItem';
 import { WholeState } from '@/types/types';
 import getStripe from '@/helpers/getStripe';
+import { client } from '@/sanity/lib/client';
+import { groq } from 'next-sanity';
+import product from '@/sanity/product';
 
 export const Blur = () => {
   const ref = useRef<Element | null>(null);
@@ -34,9 +37,14 @@ export const Blur = () => {
     : null;
 };
 
+// export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
+//   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+// }`;
+
 function Cart() {
   const showCart = useSelector((state: WholeState) => state.cart.showCart);
   const items = useSelector((state: WholeState) => state.cart.items);
+  const products = useSelector((state: WholeState) => state.product.products);
   const dispatch = useDispatch();
 
   const [totalCost, setTotalCost] = useState(0);
@@ -56,21 +64,30 @@ function Cart() {
 
     const data = await response.json();
 
-    // console.log(items, JSON.stringify(items));
+    ////////////////////////////////
+    // Refactor this check
+    ////////////////////////////////
+    // Also give feedback
 
-    // console.log(data);
+    const isEnoughtInInventoryArray: any = items
+      .map(item => {
+        if (
+          products.find(
+            product =>
+              item.product._id === product._id &&
+              product.leftInStock >= item.quantity
+          )
+        ) {
+          return true;
+        } else return false;
+      })
+      .filter(a => a !== undefined);
+
+    if (isEnoughtInInventoryArray.some((item: any) => item === false))
+      return console.log('There are not enought items in inventory');
 
     stripe.redirectToCheckout({ sessionId: data.id });
   };
-
-  // console.log(items);
-  // let totalCostToAdd: number;
-
-  // for (let i = 0; i < items.length; i++) {
-  //   totalCostToAdd +=
-  //   items[i].quantity *
-  //   (items[i].product.price * (1 - items[i].product.discount / 100));
-  // }
 
   function addAllCosts() {
     const totalCostToAdd = items.map(item =>
@@ -81,8 +98,6 @@ function Cart() {
         )
       ).toFixed(2)
     );
-
-    // console.log(totalCostToAdd);
 
     setTotalCost(
       totalCostToAdd.reduce((accumulator, currentValue) => {

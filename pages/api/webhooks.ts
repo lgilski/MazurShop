@@ -1,6 +1,13 @@
+import { client } from '@/sanity/lib/client';
+import { groq } from 'next-sanity';
+
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 // const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
+  image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+}`;
 
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
@@ -11,14 +18,20 @@ const handler = async (req: any, res: any) => {
 
     // let event;
 
+    //   client
+    // .patch('bike-123') // Document ID to patch
+    // .set({inStock: false}) // Shallow merge
+    // .inc({numSold: 1}) // Increment field by count
+    // .commit() // Perform the patch and return a promise
     const listLineItems = await stripe.checkout.sessions.listLineItems(
       req.body.data.object.id
     );
 
-    console.log('LINE ITEM: ', listLineItems);
+    const data = await client.fetch(productsQuery);
+
+    console.log('LINE ITEM: ', listLineItems, data);
 
     try {
-      // stripe.checkout.sessions.listLineItems(req.data.object.id)
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
