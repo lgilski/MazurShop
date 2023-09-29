@@ -41,7 +41,7 @@ const handler = async (req: any, res: any) => {
         console.log('BOUGHT ITEM DATA: ', boughtItemData);
 
         client
-          .patch(boughtItemData.slug) // Document ID to patch
+          .patch(boughtItemData._id) // Document ID to patch
           .dec({ leftInStock: boughtItem.quantity })
           .commit() // Perform the patch and return a promise
           .then(updatedProduct => {
