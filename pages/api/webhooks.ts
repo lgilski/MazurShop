@@ -25,7 +25,7 @@ const handler = async (req: any, res: any) => {
       return;
     }
 
-    res.json({ received: true, data: await listLineItems });
+    res.json({ received: true, data: listLineItems });
   } else {
     res.setHeader('Allow', 'POST');
     res.status(405).end('Method Not Allowed');
