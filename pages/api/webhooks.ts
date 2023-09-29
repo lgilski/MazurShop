@@ -34,17 +34,19 @@ const handler = async (req: any, res: any) => {
 
       // DECREMENT THE STOCK!!!!!
 
-      client
-        .patch(boughtItemData)
-        .dec({ leftInStock: boughtItem.quantity })
-        .commit()
-        .then(updatedProduct => {
-          console.log('Hurray, the product is updated! New document:');
-          console.log(updatedProduct);
-        })
-        .catch(err => {
-          console.error('Oh no, the update failed: ', err.message);
-        });
+      console.log(
+        await client
+          .patch(boughtItemData._id)
+          .dec({ leftInStock: boughtItem.quantity })
+          .commit()
+      );
+      // .then(updatedProduct => {
+      //   console.log('Hurray, the product is updated! New document:');
+      //   console.log(updatedProduct);
+      // })
+      // .catch(err => {
+      //   console.error('Oh no, the update failed: ', err.message);
+      // });
     });
 
     try {
