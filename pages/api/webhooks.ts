@@ -29,20 +29,19 @@ const handler = async (req: any, res: any) => {
 
     const data = await client.fetch(productsQuery);
 
-    listLineItems.data.forEach(async (boughtItem: any) => {
-      const boughtItemData = data.find(
-        (product: any) => product.name === boughtItem.description
-      );
-
-      await client
-        .patch(boughtItemData._id) // Document ID to patch
-        .set({ leftInStock: boughtItemData.leftInStock - boughtItem.quantity }) // Shallow merge
-        .commit(); // Perform the patch and return a promise
-    });
-
     console.log('LINE ITEM: ', listLineItems, data);
 
     try {
+      listLineItems.data.forEach(async (boughtItem: any) => {
+        const boughtItemData = data.find(
+          (product: any) => product.name === boughtItem.description
+        );
+
+        await client
+          .patch(boughtItemData._id) // Document ID to patch
+          .dec({ leftInStock: boughtItem.quantity }) // Shallow merge
+          .commit(); // Perform the patch and return a promise
+      });
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
