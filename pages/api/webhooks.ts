@@ -29,6 +29,17 @@ const handler = async (req: any, res: any) => {
 
     const data = await client.fetch(productsQuery);
 
+    listLineItems.data.forEach(boughtItem => {
+      const boughtItemData = data.find(
+        product => product.name === boughtItem.description
+      );
+
+      client
+        .patch(boughtItemData._id) // Document ID to patch
+        .set({ leftInStock: boughtItemData.leftInStock - boughtItem.quantity }) // Shallow merge
+        .commit(); // Perform the patch and return a promise
+    });
+
     console.log('LINE ITEM: ', listLineItems, data);
 
     try {
