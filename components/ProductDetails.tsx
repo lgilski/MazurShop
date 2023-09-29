@@ -28,10 +28,10 @@ function ProductDetails({ product }: { product: ProductType }) {
         <div className='flex flex-col max-w-full bg-white rounded-2xl p-4  shadow-md'>
           <img
             className='w-full aspect-video block object-cover rounded-lg'
-            src={urlForImage(product.image[imgIndex]).toString()}
+            src={urlForImage(product?.image[imgIndex]).toString()}
           />
           <div className='flex gap-4 mt-4 justify-center items-center'>
-            {product.image.map((imageInner, index) => (
+            {product?.image.map((imageInner, index) => (
               <div
                 key={imageInner._key}
                 className={`relative w-[20%] rounded overflow-hidden ${
