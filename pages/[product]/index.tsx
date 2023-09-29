@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { groq } from 'next-sanity';
 import { client } from '../../sanity/lib/client';
 import ProductDetails from '@/components/ProductDetails';
+import { ProductType } from '@/types/types';
 
 export const productQuery = groq`*[_type == "product" && slug.current == $slug][0]{
   details, image, leftInStock, name, price, discount, slug, _id
@@ -35,7 +36,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 export default function ProductDetailsPage({
   product,
 }: {
-  product: SanityDocument;
+  product: ProductType;
 }) {
   // client.listen(productQuery, queryParams).subscribe(async update => {
   //   console.log(update);
