@@ -11,7 +11,7 @@ export const productsQuery = groq`*[_type == "product" && defined(slug.current)]
 
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
-    console.log(req.body);
+    // console.log(req.body);
 
     // const buf = await buffer(req);
     // const sig = req.headers['stripe-signature'];
@@ -29,7 +29,7 @@ const handler = async (req: any, res: any) => {
 
     const data = await client.fetch(productsQuery);
 
-    console.log('LINE ITEM: ', listLineItems, data);
+    // console.log('LINE ITEM: ', listLineItems, data);
 
     try {
       listLineItems.data.forEach(async (boughtItem: any) => {
@@ -37,9 +37,12 @@ const handler = async (req: any, res: any) => {
           (product: any) => product.name === boughtItem.description
         );
 
+        console.log('BOUGHT ITEM: ', boughtItem);
+        console.log('BOUGHT ITEM DATA: ', boughtItemData);
+
         await client
           .patch(boughtItemData._id) // Document ID to patch
-          .dec({ leftInStock: boughtItem.quantity }) // Shallow merge
+          .dec({ leftInStock: boughtItem.quantity })
           .commit(); // Perform the patch and return a promise
       });
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
