@@ -28,7 +28,11 @@ function ProductDetails({ product }: { product: ProductType }) {
         <div className='flex flex-col max-w-full bg-white rounded-2xl p-4  shadow-md'>
           <img
             className='w-full aspect-video block object-cover rounded-lg'
-            src={urlForImage(product?.image[imgIndex]).toString()}
+            src={
+              product?.image
+                ? urlForImage(product?.image[imgIndex]).toString()
+                : ''
+            }
           />
           <div className='flex gap-4 mt-4 justify-center items-center'>
             {product?.image.map((imageInner, index) => (
@@ -41,7 +45,7 @@ function ProductDetails({ product }: { product: ProductType }) {
               >
                 <img
                   className={` relative aspect-square block object-cover cursor-pointer`}
-                  src={urlForImage(imageInner).toString()}
+                  src={product?.image ? urlForImage(imageInner).toString() : ''}
                   onClick={() => setImgIndex(index)}
                 />
               </div>
