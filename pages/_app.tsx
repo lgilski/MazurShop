@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 
 const roboto = Roboto({
   subsets: ['latin'],
-  weight: ['100', '300', '400', '500', '700', '900'],
+  weight: ['900', '100', '300', '400', '500', '700'],
   style: ['normal', 'italic'],
   variable: '--font-roboto',
 });
@@ -17,7 +17,7 @@ const roboto = Roboto({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <main className={`${roboto.variable} font-roboto `}>
+      <main className={`${roboto.variable} font-roboto`}>
         <Layout />
         <Component {...pageProps} />
       </main>
