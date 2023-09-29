@@ -12,7 +12,10 @@ const handler = async (req: any, res: any) => {
     // let event;
 
     const listLineItems = stripe.checkout.sessions.listLineItems(
-      req.body.data.object.id
+      req.body.data.object.id,
+      function (err: any, lineItems: any) {
+        return lineItems;
+      }
     );
 
     try {
@@ -23,7 +26,7 @@ const handler = async (req: any, res: any) => {
       return;
     }
 
-    res.json({ received: true, uwu: listLineItems });
+    res.json({ received: true, data: listLineItems });
   } else {
     res.setHeader('Allow', 'POST');
     res.status(405).end('Method Not Allowed');
