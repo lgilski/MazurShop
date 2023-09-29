@@ -1,4 +1,4 @@
-// const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 // const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -11,14 +11,17 @@ const handler = async (req: any, res: any) => {
 
     // let event;
 
+    // stripe
+
     try {
+      // stripe.checkout.sessions.listLineItems(req.data.object.id)
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
-    } catch (err) {
-      // res.status(400).send(`Webhook Error: ${err.message}`);
-      // return;
+    } catch (err: any) {
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
     }
 
-    res.json({ received: true });
+    res.json({ received: true, uwu: req.data.object.id });
   } else {
     res.setHeader('Allow', 'POST');
     res.status(405).end('Method Not Allowed');
