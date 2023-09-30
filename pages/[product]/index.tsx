@@ -60,5 +60,5 @@ export default function ProductDetailsPage({
   //   dispatch(cartActions.updateProducts(update));
   // });
 
-  return <ProductDetails productId={product._id} />;
+  return <ProductDetails productId={product?._id} />;
 }
