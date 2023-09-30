@@ -18,7 +18,7 @@ export default function Product({ product }: { product: ProductType }) {
   const dispatch = useDispatch();
 
   const sendAddToCart = function () {
-    if (product.leftInStock === 0) return;
+    if (product.leftInStock <= 0) return;
 
     // if(product.leftInStock)
 

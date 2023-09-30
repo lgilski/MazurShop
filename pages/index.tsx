@@ -30,7 +30,7 @@ export default function Home() {
   client
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
   }`
     )
     .then(data => dispatch(productActions.setProducts(data)));
@@ -42,7 +42,7 @@ export default function Home() {
   client
     .listen(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
   }`
     )
     .subscribe(async update => {
