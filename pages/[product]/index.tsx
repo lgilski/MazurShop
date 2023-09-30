@@ -42,11 +42,25 @@ export default function ProductDetailsPage({
 }) {
   const dispatch = useDispatch();
 
-  client.listen(productQuery).subscribe(async update => {
-    console.log(update);
+  client
+    .fetch(
+      groq`*[_type == "product" && defined(slug.current)]{
+    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`
+    )
+    .then(data => dispatch(productActions.setProducts(data)));
 
-    dispatch(productActions.updateProducts(update));
-  });
+  client
+    .listen(
+      groq`*[_type == "product" && defined(slug.current)][0]{
+    details, image, leftInStock, name, price, discount, slug, _id
+  }`
+    )
+    .subscribe(async update => {
+      console.log(update);
+
+      dispatch(productActions.updateProducts(update));
+    });
 
   return <ProductDetails product={product} />;
 }
