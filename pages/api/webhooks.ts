@@ -7,10 +7,10 @@ export const productsQuery = groq`*[_type == "product" && defined(slug.current)]
   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
 }`;
 
-export async function updateDocumentLeftInStock(_id: string, quantity: number) {
-  const result = client.patch(_id).dec({ leftInStock: quantity });
-  return result;
-}
+// export async function updateDocumentLeftInStock(_id: string, quantity: number) {
+//   const result = client.patch(_id).dec({ leftInStock: quantity });
+//   return result;
+// }
 
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
@@ -28,7 +28,7 @@ const handler = async (req: any, res: any) => {
     const data = await client.fetch(productsQuery);
 
     // console.log('LINE ITEM: ', listLineItems, data);
-    await updateDocumentLeftInStock('192f82dd-2ad0-409b-8002-e2f27896477c', 2);
+    // await updateDocumentLeftInStock('192f82dd-2ad0-409b-8002-e2f27896477c', 2);
 
     listLineItems.data.forEach(async (boughtItem: any) => {
       const boughtItemData = data.find(
@@ -40,6 +40,38 @@ const handler = async (req: any, res: any) => {
 
       // DECREMENT THE STOCK!!!!!
       // await updateDocumentLeftInStock(boughtItemData._id, boughtItem.quantity);
+
+      async function mutate(mutations: any) {
+        const result = await fetch(
+          `https://${process.env.SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/mutate/${process.env.SANITY_DATASET}`,
+          {
+            headers: {
+              'content-type': 'application/json',
+              Authorization: `Bearer ${process.env.SANITY_KEY}`,
+            },
+            body: JSON.stringify(mutations),
+            method: 'POST',
+          }
+        );
+
+        const json = await result.json();
+        return json;
+      }
+
+      const mutations = {
+        mutations: [
+          {
+            patch: {
+              id: boughtItemData._id,
+              inc: {
+                leftInStock: boughtItem.quantity,
+              },
+            },
+          },
+        ],
+      };
+
+      mutate(mutations);
 
       // console.log(
       //   await client
