@@ -8,7 +8,12 @@ export const productsQuery = groq`*[_type == "product" && defined(slug.current)]
 }`;
 
 export async function updateDocumentLeftInStock(_id: string, quantity: number) {
-  const result = client.patch(_id).dec({ leftInStock: quantity }).commit();
+  const result = await client
+    .patch(_id)
+    .dec({ leftInStock: quantity })
+    .commit();
+
+  console.log(result);
   return result;
 }
 
