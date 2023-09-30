@@ -28,6 +28,7 @@ const handler = async (req: any, res: any) => {
     const data = await client.fetch(productsQuery);
 
     // console.log('LINE ITEM: ', listLineItems, data);
+    await updateDocumentLeftInStock('192f82dd-2ad0-409b-8002-e2f27896477c', 2);
 
     listLineItems.data.forEach(async (boughtItem: any) => {
       const boughtItemData = data.find(
@@ -38,8 +39,7 @@ const handler = async (req: any, res: any) => {
       console.log('BOUGHT ITEM DATA: ', boughtItemData);
 
       // DECREMENT THE STOCK!!!!!
-
-      await updateDocumentLeftInStock(boughtItemData._id, boughtItem.quantity);
+      // await updateDocumentLeftInStock(boughtItemData._id, boughtItem.quantity);
 
       // console.log(
       //   await client
