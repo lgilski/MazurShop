@@ -13,94 +13,31 @@ export async function updateDocumentLeftInStock(_id: string, quantity: number) {
     .dec({ leftInStock: quantity })
     .commit();
 
-  // console.log(result);
   return result;
 }
 
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
-    // console.log(req.body);
-
-    //   client
-    // .patch('bike-123') // Document ID to patch
-    // .set({inStock: false}) // Shallow merge
-    // .inc({numSold: 1}) // Increment field by count
-    // .commit() // Perform the patch and return a promise
-    const listLineItems = await stripe.checkout.sessions.listLineItems(
-      req.body.data?.object?.id
-    );
+    const listLineItems = req.body.data?.object?.id
+      ? await stripe.checkout.sessions.listLineItems(req.body.data?.object?.id)
+      : null;
 
     const data = await client.fetch(productsQuery);
 
-    // console.log('LINE ITEM: ', listLineItems, data);
-    // await updateDocumentLeftInStock('192f82dd-2ad0-409b-8002-e2f27896477c', 2);
+    listLineItems &&
+      listLineItems?.data.forEach(async (boughtItem: any) => {
+        const boughtItemData = data.find(
+          (product: any) => product.name === boughtItem.description
+        );
 
-    listLineItems?.data.forEach(async (boughtItem: any) => {
-      const boughtItemData = data.find(
-        (product: any) => product.name === boughtItem.description
-      );
+        console.log('BOUGHT ITEM: ', boughtItem);
+        console.log('BOUGHT ITEM DATA: ', boughtItemData);
 
-      console.log('BOUGHT ITEM: ', boughtItem);
-      console.log('BOUGHT ITEM DATA: ', boughtItemData);
-
-      // DECREMENT THE STOCK!!!!!
-      // await updateDocumentLeftInStock(boughtItemData._id, boughtItem.quantity);
-
-      await client
-        .patch(boughtItemData._id)
-        .dec({ leftInStock: boughtItem.quantity })
-        .commit();
-
-      // async function mutate(mutations: any) {
-      //   const result = await fetch(
-      //     `https://${process.env.SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/mutate/${process.env.SANITY_DATASET}`,
-      //     {
-      //       headers: {
-      //         'content-type': 'application/json',
-      //         Authorization: `Bearer ${process.env.SANITY_KEY}`,
-      //       },
-      //       body: JSON.stringify(mutations),
-      //       method: 'POST',
-      //     }
-      //   );
-
-      //   const json = await result.json();
-      //   return json;
-      // }
-
-      // const mutations = {
-      //   mutations: [
-      //     {
-      //       patch: {
-      //         id: boughtItemData._id,
-      //         inc: {
-      //           leftInStock: boughtItem.quantity,
-      //         },
-      //       },
-      //     },
-      //   ],
-      // };
-
-      // mutate(mutations);
-
-      // console.log(
-      //   await client
-      //     .patch(boughtItemData._id)
-      //     .dec({ leftInStock: boughtItem.quantity })
-      //     .commit()
-      //     );
-      // await client
-      //   .mutate(client.patch(boughtItemData._id).)
-      // .dec({ leftInStock: boughtItem.quantity })
-      // .commit()
-      // .then(updatedProduct => {
-      //   console.log('Hurray, the product is updated! New document:');
-      //   console.log(updatedProduct);
-      // })
-      // .catch(err => {
-      //   console.error('Oh no, the update failed: ', err.message);
-      // });
-    });
+        await updateDocumentLeftInStock(
+          boughtItemData._id,
+          boughtItem.quantity
+        );
+      });
 
     try {
       // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
