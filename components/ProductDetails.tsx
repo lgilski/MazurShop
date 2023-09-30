@@ -2,18 +2,22 @@ import { urlForImage } from '@/sanity/lib/image';
 import Price from './Price';
 import SelectQuantity from './SelectQuantity';
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
-import { ProductType } from '@/types/types';
+import { ProductType, WholeState } from '@/types/types';
 
-function ProductDetails({ product }: { product: ProductType }) {
+function ProductDetails({ productId }: { productId: string }) {
   // console.log(product);
+
+  const products = useSelector((state: WholeState) => state.product.products);
+
+  const product = products.find(product => product._id === productId);
 
   const [imgIndex, setImgIndex] = useState(0);
   const dispatch = useDispatch();
 
   const sendAddToCart = function () {
-    if (product.leftInStock === 0) return;
+    if (product?.leftInStock === 0) return;
 
     dispatch(
       cartActions.addToCart({ product, quantity: Number(ref.current?.value) })

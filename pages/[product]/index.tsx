@@ -4,6 +4,8 @@ import { groq } from 'next-sanity';
 import { client } from '../../sanity/lib/client';
 import ProductDetails from '@/components/ProductDetails';
 import { ProductType } from '@/types/types';
+import { productActions } from '@/store/product';
+import { useDispatch } from 'react-redux';
 
 export const productQuery = groq`*[_type == "product" && slug.current == $slug][0]{
   details, image, leftInStock, name, price, discount, slug, _id
@@ -38,11 +40,25 @@ export default function ProductDetailsPage({
 }: {
   product: ProductType;
 }) {
+  const dispatch = useDispatch();
+
+  client
+    .listen(
+      groq`*[_type == "product" && defined(slug.current)]{
+    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`
+    )
+    .subscribe(async update => {
+      console.log(update);
+
+      dispatch(productActions.updateProducts(update));
+    });
+
   // client.listen(productQuery, queryParams).subscribe(async update => {
   //   console.log(update);
 
   //   dispatch(cartActions.updateProducts(update));
   // });
 
-  return <ProductDetails product={product} />;
+  return <ProductDetails productId={product._id} />;
 }
