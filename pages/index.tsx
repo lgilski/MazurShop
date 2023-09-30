@@ -10,12 +10,15 @@ import BestProducts from '@/components/BestProducts';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';
 
-export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
-  image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-}`;
+// export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
+//   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+// }`;
 
 export const getStaticProps = async () => {
-  const data = await client.fetch(productsQuery);
+  const data =
+    await client.fetch(groq`*[_type == "product" && defined(slug.current)]{
+    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`);
 
   return { props: { data } };
 };
@@ -27,11 +30,17 @@ export default function Home({ data }: { data: SanityDocument[] }) {
 
   dispatch(productActions.setProducts(data));
 
-  client.listen(productsQuery).subscribe(async update => {
-    console.log(update);
+  client
+    .listen(
+      groq`*[_type == "product" && defined(slug.current)]{
+    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`
+    )
+    .subscribe(async update => {
+      console.log(update);
 
-    dispatch(productActions.updateProducts(update));
-  });
+      dispatch(productActions.updateProducts(update));
+    });
 
   return (
     <>
