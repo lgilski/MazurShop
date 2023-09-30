@@ -7,6 +7,11 @@ export const productsQuery = groq`*[_type == "product" && defined(slug.current)]
   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
 }`;
 
+export async function updateDocumentLeftInStock(_id, quantity) {
+  const result = client.patch(_id).dec({ leftInStock: quantity });
+  return result;
+}
+
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
     // console.log(req.body);
@@ -34,12 +39,18 @@ const handler = async (req: any, res: any) => {
 
       // DECREMENT THE STOCK!!!!!
 
-      console.log(
-        await client
-          .patch(boughtItemData._id)
-          .dec({ leftInStock: boughtItem.quantity })
-          .commit()
-      );
+      await updateDocumentLeftInStock(boughtItemData._id, boughtItem.quantity);
+
+      // console.log(
+      //   await client
+      //     .patch(boughtItemData._id)
+      //     .dec({ leftInStock: boughtItem.quantity })
+      //     .commit()
+      //     );
+      // await client
+      //   .mutate(client.patch(boughtItemData._id).)
+      // .dec({ leftInStock: boughtItem.quantity })
+      // .commit()
       // .then(updatedProduct => {
       //   console.log('Hurray, the product is updated! New document:');
       //   console.log(updatedProduct);
