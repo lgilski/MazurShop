@@ -27,7 +27,7 @@ const handler = async (req: any, res: any) => {
     // .inc({numSold: 1}) // Increment field by count
     // .commit() // Perform the patch and return a promise
     const listLineItems = await stripe.checkout.sessions.listLineItems(
-      req.body.data.object.id
+      req.body.data?.object?.id
     );
 
     const data = await client.fetch(productsQuery);
@@ -35,7 +35,7 @@ const handler = async (req: any, res: any) => {
     // console.log('LINE ITEM: ', listLineItems, data);
     // await updateDocumentLeftInStock('192f82dd-2ad0-409b-8002-e2f27896477c', 2);
 
-    listLineItems.data.forEach(async (boughtItem: any) => {
+    listLineItems?.data.forEach(async (boughtItem: any) => {
       const boughtItemData = data.find(
         (product: any) => product.name === boughtItem.description
       );
@@ -153,3 +153,5 @@ export default handler;
 //     at ContextAPI.with (/var/task/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:516)
 // Error: Runtime exited with error: exit status 1
 // Runtime.ExitError
+
+// [{"id":"atm-2W6mQ7L6mqHDXFLpz59wlr7IKAT","projectId":"rwsjsahd","inProgress":false,"duration":1137,"createdAt":"2023-09-30T08:09:43.694Z","updatedAt":"2023-09-30T08:09:43.694Z","messageId":"msg-2W6mPxYdiaiWlUyDpf5oTRxvll5","hookId":"8MbJ088VfP7yfyeB","isFailure":true,"failureReason":"other","resultCode":405,"resultBody":""},{"id":"atm-2W6lunTcaoVfjAbJ6A74xO2P6qL","projectId":"rwsjsahd","inProgress":false,"duration":1132,"createdAt":"2023-09-30T08:05:34.849Z","updatedAt":"2023-09-30T08:05:34.849Z","messageId":"msg-2W6luer2E43DqpFTNenj9AJcr96","hookId":"8MbJ088VfP7yfyeB","isFailure":true,"failureReason":"other","resultCode":405,"resultBody":""}]
