@@ -14,21 +14,30 @@ import { productActions } from '@/store/product';
 //   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
 // }`;
 
-export const getStaticProps = async () => {
-  const data =
-    await client.fetch(groq`*[_type == "product" && defined(slug.current)]{
-    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-  }`);
+// export const getStaticProps = async () => {
+//   const data =
+//     await client.fetch(groq`*[_type == "product" && defined(slug.current)]{
+//     image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+//   }`);
 
-  return { props: { data } };
-};
+//   return { props: { data } };
+// };
 
-export default function Home({ data }: { data: SanityDocument[] }) {
+// export default function Home({ data }: { data: SanityDocument[] }) {
+export default function Home() {
   const dispatch = useDispatch();
 
-  console.log(data);
+  client
+    .fetch(
+      groq`*[_type == "product" && defined(slug.current)]{
+    image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`
+    )
+    .then(data => dispatch(productActions.setProducts(data)));
 
-  dispatch(productActions.setProducts(data));
+  // console.log(data);
+
+  // dispatch(productActions.setProducts(data));
 
   client
     .listen(
