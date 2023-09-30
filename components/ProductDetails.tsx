@@ -2,9 +2,9 @@ import { urlForImage } from '@/sanity/lib/image';
 import Price from './Price';
 import SelectQuantity from './SelectQuantity';
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
-import { ProductType } from '@/types/types';
+import { ProductType, WholeState } from '@/types/types';
 
 function ProductDetails({ product }: { product: ProductType }) {
   // console.log(product);
@@ -12,11 +12,18 @@ function ProductDetails({ product }: { product: ProductType }) {
   const [imgIndex, setImgIndex] = useState(0);
   const dispatch = useDispatch();
 
+  const currentProduct = useSelector(
+    (state: WholeState) => state.product.products
+  ).find(innerProduct => innerProduct._id === product._id);
+
   const sendAddToCart = function () {
-    if (product.leftInStock === 0) return;
+    if (currentProduct?.leftInStock === 0) return;
 
     dispatch(
-      cartActions.addToCart({ product, quantity: Number(ref.current?.value) })
+      cartActions.addToCart({
+        currentProduct,
+        quantity: Number(ref.current?.value),
+      })
     );
   };
 
@@ -24,20 +31,20 @@ function ProductDetails({ product }: { product: ProductType }) {
 
   return (
     <>
-      {product && (
+      {currentProduct && (
         <div className='max-w-7xl  mx-auto mb-16 mt-32 '>
           <section className='grid grid-cols-[2fr_1fr] gap-8 items-start'>
             <div className='flex flex-col max-w-full bg-white rounded-2xl p-4  shadow-md'>
               <img
                 className='w-full aspect-video block object-cover rounded-lg'
                 src={
-                  product?.image
-                    ? urlForImage(product?.image[imgIndex]).toString()
+                  currentProduct?.image
+                    ? urlForImage(currentProduct?.image[imgIndex]).toString()
                     : ''
                 }
               />
               <div className='flex gap-4 mt-4 justify-center items-center'>
-                {product?.image.map((imageInner, index) => (
+                {currentProduct?.image.map((imageInner, index) => (
                   <div
                     key={imageInner._key}
                     className={`relative w-[20%] rounded overflow-hidden ${
@@ -48,7 +55,9 @@ function ProductDetails({ product }: { product: ProductType }) {
                     <img
                       className={` relative aspect-square block object-cover cursor-pointer`}
                       src={
-                        product?.image ? urlForImage(imageInner).toString() : ''
+                        currentProduct?.image
+                          ? urlForImage(imageInner).toString()
+                          : ''
                       }
                       onClick={() => setImgIndex(index)}
                     />
@@ -57,22 +66,27 @@ function ProductDetails({ product }: { product: ProductType }) {
               </div>
             </div>
             <div className='pt-8 relative flex flex-col bg-white rounded-2xl p-4 shadow-md'>
-              <h4 className='text-3xl font-medium mb-4'>{product.name}</h4>
+              <h4 className='text-3xl font-medium mb-4'>
+                {currentProduct.name}
+              </h4>
               <h6 className='font-medium'>Details:</h6>
-              <p className='mb-12'>{product.details}</p>
+              <p className='mb-12'>{currentProduct.details}</p>
               <div className='flex items-center gap-4 relative '>
-                {product.discount && (
+                {currentProduct.discount && (
                   <p className=' flex w-10 h-10 items-center justify-center  text-base font-medium p-1 bg-purple-200 text-purple-900 rounded-full'>
-                    -{product.discount}%
+                    -{currentProduct.discount}%
                   </p>
                 )}
-                <Price discount={product.discount} price={product.price} />
+                <Price
+                  discount={currentProduct.discount}
+                  price={currentProduct.price}
+                />
               </div>
               <div className='flex items-baseline gap-2 mb-4 pt-2'>
-                <SelectQuantity product={product} ref={ref} />
+                <SelectQuantity product={currentProduct} ref={ref} />
                 <p className='font-medium'>
-                  {product.leftInStock !== 0
-                    ? `only ${product.leftInStock} left`
+                  {currentProduct.leftInStock !== 0
+                    ? `only ${currentProduct.leftInStock} left`
                     : 'sold out'}
                 </p>
               </div>
