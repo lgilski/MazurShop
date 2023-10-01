@@ -85,7 +85,7 @@ function ProductDetails({ product }: { product: ProductType }) {
               <div className='flex items-baseline gap-2 mb-4 pt-2'>
                 <SelectQuantity product={currentProduct} ref={ref} />
                 <p className='font-medium'>
-                  {currentProduct.leftInStock !== 0
+                  {currentProduct.leftInStock > 0
                     ? `only ${currentProduct.leftInStock} left`
                     : 'sold out'}
                 </p>
