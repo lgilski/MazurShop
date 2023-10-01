@@ -1,7 +1,7 @@
 import { groq } from 'next-sanity';
 import type { SanityDocument } from '@sanity/client';
 import Pets from '@/components/Products';
-import { client } from '@/sanity/lib/client';
+import { client, clientRead } from '@/sanity/lib/client';
 import Head from 'next/head';
 import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
@@ -27,7 +27,7 @@ import { productActions } from '@/store/product';
 export default function Home() {
   const dispatch = useDispatch();
 
-  client
+  clientRead
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
     image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
@@ -39,7 +39,7 @@ export default function Home() {
 
   // dispatch(productActions.setProducts(data));
 
-  client
+  clientRead
     .listen(
       groq`*[_type == "product" && defined(slug.current)]{
     image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id

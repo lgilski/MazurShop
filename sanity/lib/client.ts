@@ -9,3 +9,10 @@ export const client = createClient({
   token,
   useCdn,
 });
+
+export const clientRead = createClient({
+  apiVersion,
+  dataset,
+  projectId,
+  useCdn,
+});

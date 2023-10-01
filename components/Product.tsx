@@ -50,7 +50,7 @@ export default function Product({ product }: { product: ProductType }) {
           <div className='flex items-baseline justify-between'>
             <Price discount={product.discount} price={product.price} />
             <p className='font-medium'>
-              {product.leftInStock !== 0
+              {product.leftInStock > 0
                 ? `only ${product.leftInStock} left`
                 : 'sold out'}
             </p>
