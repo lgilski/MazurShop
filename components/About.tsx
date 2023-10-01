@@ -5,8 +5,8 @@ import deDog from '../assets/images/deDog.jpg';
 function About() {
   return (
     <section className='max-w-full bg-green-100 py-12'>
-      <div className='max-w-6xl mx-auto flex justify-between'>
-        <div className='w-96 rounded-lg border-2 border-solid border-green-400 relative  after:z-2 after:bg-gradient-to-tr after:from-green-400 after:to-green-700 after:opacity-60 after:content-[""] after:w-full after:h-full after:block after:top-0 after:absolute'>
+      <div className='max-w-6xl mx-auto flex justify-center gap-20'>
+        <div className='w-96 rounded-lg border-2 border-solid border-green-400 relative after:z-2 after:bg-gradient-to-tr after:from-green-400 after:to-green-700 after:opacity-60 after:content-[""] after:w-full after:h-full after:block after:top-0 after:absolute'>
           <Image src={deDog} className='w-full ' alt='' />
         </div>
         <div className='my-auto'>
