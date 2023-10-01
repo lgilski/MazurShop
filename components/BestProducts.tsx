@@ -8,7 +8,7 @@ function BestProducts() {
   return (
     <>
       {data && (
-        <section className='max-w-7xl mx-auto mb-8'>
+        <section className='max-w-7xl mx-auto mb-12'>
           <h4 className='text-5xl text-center mb-8 font-bold'>
             Our best products
           </h4>

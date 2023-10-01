@@ -9,6 +9,7 @@ import Features from '@/components/Features';
 import BestProducts from '@/components/BestProducts';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';
+import About from '@/components/About';
 
 // export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
 //   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
@@ -53,6 +54,7 @@ export default function Home() {
       <Hero />
       <Features />
       <BestProducts />
+      <About />
     </>
   );
 }
