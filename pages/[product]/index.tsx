@@ -57,8 +57,6 @@ export default function ProductDetailsPage({
   }`
     )
     .subscribe(async update => {
-      console.log(update);
-
       dispatch(productActions.updateProducts(update));
     });
 

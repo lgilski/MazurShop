@@ -35,10 +35,6 @@ export default function Home() {
     )
     .then(data => dispatch(productActions.setProducts(data)));
 
-  // console.log(data);
-
-  // dispatch(productActions.setProducts(data));
-
   clientRead
     .listen(
       groq`*[_type == "product" && defined(slug.current)]{
@@ -46,8 +42,6 @@ export default function Home() {
   }`
     )
     .subscribe(async update => {
-      console.log(update);
-
       dispatch(productActions.updateProducts(update));
     });
 

@@ -1,19 +1,12 @@
+import toast from 'react-hot-toast';
 import { cartActions } from '@/store/cart';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Link from 'next/link';
-
-import { urlForImage } from '@/sanity/lib/image';
-import Price from './Price';
-import SelectQuantity from './SelectQuantity';
 import CartItem from './CartItem';
 import { WholeState } from '@/types/types';
 import getStripe from '@/helpers/getStripe';
-import { client } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
-import product from '@/sanity/product';
 
 export const Blur = () => {
   const ref = useRef<Element | null>(null);
@@ -47,10 +40,12 @@ function Cart() {
   const products = useSelector((state: WholeState) => state.product.products);
   const dispatch = useDispatch();
 
-  const [totalCost, setTotalCost] = useState(0);
+  const [totalCost, setTotalCost] = useState<number>(0);
 
   const handleCheckout = async function () {
     const stripe = await getStripe();
+
+    toast('Redirecting...');
 
     const response = await fetch('/api/stripe', {
       method: 'POST',
@@ -84,7 +79,8 @@ function Cart() {
       .filter(a => a !== undefined);
 
     if (isEnoughtInInventoryArray.some((item: any) => item === false))
-      return console.log('There are not enought items in inventory');
+      return toast.error('There are not enought items in inventory');
+    // return console.log('There are not enought items in inventory');
 
     stripe.redirectToCheckout({ sessionId: data.id });
   };
@@ -101,7 +97,7 @@ function Cart() {
 
     setTotalCost(
       totalCostToAdd.reduce((accumulator, currentValue) => {
-        return Number(accumulator) + Number(currentValue);
+        return Number(accumulator.toFixed(2)) + Number(currentValue);
       }, 0)
     );
   }
@@ -134,7 +130,7 @@ function Cart() {
             <p className='text-3xl mb-4 pt-4 border-t border-solid border-grey-300 '>
               Total cost:{' '}
               <span className='text-green-800 text-5xl font-bold'>
-                {totalCost}zł
+                {totalCost.toFixed(2)}zł
               </span>
             </p>
             {/* <form className='w-full flex-grow'> */}

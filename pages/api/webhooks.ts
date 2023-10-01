@@ -30,9 +30,6 @@ const handler = async (req: any, res: any) => {
           (product: any) => product.name === boughtItem.description
         );
 
-        console.log('BOUGHT ITEM: ', boughtItem);
-        console.log('BOUGHT ITEM DATA: ', boughtItemData);
-
         await updateDocumentLeftInStock(
           boughtItemData._id,
           boughtItem.quantity

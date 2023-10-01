@@ -6,6 +6,9 @@ import { Roboto } from 'next/font/google';
 
 import store from '@/store';
 import { Provider } from 'react-redux';
+import { Toaster } from 'react-hot-toast';
+
+// import TosterComponent from '@/components/TosterComponent';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -19,6 +22,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <main className={`${roboto.variable} font-roboto`}>
         <Layout />
+        <Toaster />
+        {/* <TosterComponent /> */}
         <Component {...pageProps} />
       </main>
     </Provider>

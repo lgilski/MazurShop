@@ -10,6 +10,7 @@ import Price from './Price';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '@/store/cart';
 import { ProductType } from '@/types/types';
+import toast from 'react-hot-toast';
 
 export default function Product({ product }: { product: ProductType }) {
   const ref = useRef<HTMLInputElement | null>(null);
@@ -20,7 +21,11 @@ export default function Product({ product }: { product: ProductType }) {
   const sendAddToCart = function () {
     if (product.leftInStock <= 0) return;
 
-    // if(product.leftInStock)
+    // Check if there's max quantity of an item in cart
+
+    toast.success(
+      `Added ${Number(ref.current?.value)} of ${product.name} to your cart`
+    );
 
     dispatch(
       cartActions.addToCart({ product, quantity: Number(ref.current?.value) })
@@ -35,9 +40,9 @@ export default function Product({ product }: { product: ProductType }) {
         src={source}
       />
       {product.discount && (
-        <div className='absolute flex w-16 h-16 items-center justify-center top-2 right-2 text-xl font-medium p-1 bg-purple-200 text-purple-900 rounded-full'>
+        <p className='absolute flex w-16 h-16 items-center justify-center top-2 right-2 text-xl font-medium p-1 bg-purple-200 text-purple-900 rounded-full'>
           -{product.discount}%
-        </div>
+        </p>
       )}
       <div className='p-4 flex flex-col flex-grow bg-white'>
         <div className='mb-2'>
