@@ -8,8 +8,6 @@ import store from '@/store';
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 
-// import TosterComponent from '@/components/TosterComponent';
-
 const roboto = Roboto({
   subsets: ['latin'],
   weight: ['900', '100', '300', '400', '500', '700'],
@@ -20,11 +18,13 @@ const roboto = Roboto({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <main className={`${roboto.variable} font-roboto`}>
-        <Layout />
+      <main
+        className={`${roboto.variable} font-roboto flex min-h-screen flex-col justify-start`}
+      >
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
         <Toaster />
-        {/* <TosterComponent /> */}
-        <Component {...pageProps} />
       </main>
     </Provider>
   );

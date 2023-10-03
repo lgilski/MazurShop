@@ -2,7 +2,7 @@ import { SanityDocument } from '@sanity/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { groq } from 'next-sanity';
 import { client } from '../../sanity/lib/client';
-import ProductDetails from '@/components/ProductDetails';
+import ProductDetails from '@/components/Products/ProductDetails';
 import { ProductType } from '@/types/types';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';

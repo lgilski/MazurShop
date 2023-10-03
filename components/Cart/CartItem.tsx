@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
-import Price from './Price';
-import SelectQuantity from './SelectQuantity';
+import Price from '../common/Price';
+import SelectQuantity from '../common/SelectQuantity';
 import { useEffect, useRef } from 'react';
 import { cartActions } from '@/store/cart';
 import { urlForImage } from '@/sanity/lib/image';

@@ -1,5 +1,5 @@
 import { ProductType, WholeState } from '@/types/types';
-import Product from './Product';
+import Product from '../Products/Product';
 import { useSelector } from 'react-redux';
 
 function BestProducts() {
@@ -8,8 +8,8 @@ function BestProducts() {
   return (
     <>
       {data && (
-        <section className='max-w-7xl mx-auto mb-12'>
-          <h4 className='text-5xl text-center mb-8 font-bold'>
+        <section className='max-w-7xl mx-auto mb-16'>
+          <h4 className='text-5xl text-center mb-8 font-bold text-green-900'>
             Our best products
           </h4>
           <div className='grid grid-cols-3 gap-16'>

@@ -5,8 +5,8 @@ import { urlForImage } from '@/sanity/lib/image';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import SelectQuantity from './SelectQuantity';
-import Price from './Price';
+import SelectQuantity from '../common/SelectQuantity';
+import Price from '../common/Price';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '@/store/cart';
 import { ProductType } from '@/types/types';
@@ -56,7 +56,7 @@ export default function Product({ product }: { product: ProductType }) {
             <Price discount={product.discount} price={product.price} />
             <p className='font-medium'>
               {product.leftInStock > 0
-                ? `only ${product.leftInStock} left`
+                ? `${product.leftInStock} left in stock`
                 : 'sold out'}
             </p>
           </div>

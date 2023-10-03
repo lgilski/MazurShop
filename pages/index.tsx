@@ -1,15 +1,18 @@
 import { groq } from 'next-sanity';
 import type { SanityDocument } from '@sanity/client';
-import Pets from '@/components/Products';
+import Pets from '@/components/Products/Products';
 import { client, clientRead } from '@/sanity/lib/client';
 import Head from 'next/head';
-import Hero from '@/components/Hero';
-import Navigation from '@/components/Navigation';
-import Features from '@/components/Features';
-import BestProducts from '@/components/BestProducts';
+import Hero from '@/components/Home/Hero';
+import Navigation from '@/components/common/Navigation';
+import Features from '@/components/Home/Features/Features';
+import BestProducts from '@/components/Home/BestProducts';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';
-import About from '@/components/About';
+import About from '@/components/Home/About';
+import ShippingSection from '@/components/Home/ShippingSection';
+import QuoteSection from '@/components/Home/QuoteSection';
+import BuyNowSection from '@/components/Home/BuyNowSection';
 
 // export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
 //   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
@@ -49,12 +52,15 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>uwu</title>
+        <title>MazurShop</title>
       </Head>
       <Hero />
       <Features />
       <BestProducts />
       <About />
+      <ShippingSection />
+      {/* <QuoteSection /> */}
+      <BuyNowSection />
     </>
   );
 }

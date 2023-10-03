@@ -1,6 +1,6 @@
 import { urlForImage } from '@/sanity/lib/image';
-import Price from './Price';
-import SelectQuantity from './SelectQuantity';
+import Price from '../common/Price';
+import SelectQuantity from '../common/SelectQuantity';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
@@ -86,7 +86,7 @@ function ProductDetails({ product }: { product: ProductType }) {
                 <SelectQuantity product={currentProduct} ref={ref} />
                 <p className='font-medium'>
                   {currentProduct.leftInStock > 0
-                    ? `only ${currentProduct.leftInStock} left`
+                    ? `${currentProduct.leftInStock} left in stock`
                     : 'sold out'}
                 </p>
               </div>
