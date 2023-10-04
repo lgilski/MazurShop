@@ -1,4 +1,10 @@
-function Logo({ className, otherProps }) {
+function Logo({
+  className,
+  otherProps,
+}: {
+  className?: any;
+  otherProps?: any;
+}) {
   return (
     <div className={`font-semibold ${className}`} {...otherProps}>
       Mazur<span className='text-green-500'>Shop</span>
