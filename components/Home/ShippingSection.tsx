@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 function ShippingSection() {
   return (
-    <section className='max-w-6xl mx-auto py-16 [&_p]:text-xl [&_p]:mb-4 grid grid-cols-2 gap-20'>
+    <section className='max-w-6xl mx-auto py-16 [&_p]:text-xl [&_p]:mb-4 [&_p]:font-medium grid grid-cols-2 gap-20'>
       <div className='my-auto max-w-lg'>
         <h5 className='text-5xl font-semibold text-green-900 mb-8 text-center'>
           Shipping
