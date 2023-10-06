@@ -1,6 +1,5 @@
 import { groq } from 'next-sanity';
 import type { SanityDocument } from '@sanity/client';
-import Pets from '@/components/Products/Products';
 import { client, clientRead } from '@/sanity/lib/client';
 import Head from 'next/head';
 import Hero from '@/components/Home/Hero';

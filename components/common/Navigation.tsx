@@ -13,7 +13,7 @@ function Navigation() {
       </Link>
       <div className='flex gap-8'>
         <Link
-          href='/'
+          href='/products'
           className='font-medium text-xl text-grey-700 hover:text-green-500 duration-200'
         >
           Products
