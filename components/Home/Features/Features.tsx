@@ -2,7 +2,7 @@ import Feature from './Feature';
 
 function Features() {
   return (
-    <section className='max-w-7xl mx-auto mt-16 mb-24'>
+    <section className='max-w-7xl mx-auto  mb-24'>
       <h5 className='text-5xl font-semibold text-green-900 mb-12'>
         What makes our products special?
       </h5>

@@ -54,8 +54,8 @@ export default function Home() {
         <title>MazurShop</title>
       </Head>
       <Hero />
-      <Features />
       <BestProducts />
+      <Features />
       <About />
       <ShippingSection />
       {/* <QuoteSection /> */}
