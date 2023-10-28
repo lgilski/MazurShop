@@ -1,10 +1,8 @@
 import Head from 'next/head';
-import { SanityDocument } from '@sanity/client';
-import { PortableText } from '@portabletext/react';
 import { urlForImage } from '@/sanity/lib/image';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import SelectQuantity from '../common/SelectQuantity';
 import Price from '../common/Price';
 import { useDispatch } from 'react-redux';
@@ -18,7 +16,7 @@ export default function Product({ product }: { product: ProductType }) {
 
   const dispatch = useDispatch();
 
-  const sendAddToCart = function () {
+  const handleAddToCart = function () {
     if (product.leftInStock <= 0) return;
 
     // Check if there's max quantity of an item in cart
@@ -34,10 +32,14 @@ export default function Product({ product }: { product: ProductType }) {
 
   return (
     <div className='flex flex-col bg-white-100 relative w-full mx-auto rounded-xl overflow-hidden shadow-xl box-border border-2 border-solid border-grey-100'>
-      <img
+      <Image
         alt=''
-        className='max-w-full aspect-square block object-cover'
+        className='aspect-square block object-cover'
         src={source}
+        width={0}
+        height={0}
+        sizes='100vw'
+        style={{ width: '100%', height: 'auto' }}
       />
       {product.discount && (
         <p className='absolute flex w-16 h-16 items-center justify-center top-2 right-2 text-xl font-medium p-1 bg-purple-200 text-purple-900 rounded-full'>
@@ -64,7 +66,7 @@ export default function Product({ product }: { product: ProductType }) {
         <div className='flex justify-between gap-4 mt-auto pt-8'>
           <SelectQuantity ref={ref} product={product} />
           <button
-            onClick={sendAddToCart}
+            onClick={handleAddToCart}
             className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200'
           >
             Add to cart

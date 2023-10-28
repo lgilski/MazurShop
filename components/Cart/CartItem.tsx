@@ -1,12 +1,13 @@
 import { useDispatch } from 'react-redux';
 import Price from '../common/Price';
 import SelectQuantity from '../common/SelectQuantity';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { cartActions } from '@/store/cart';
 import { urlForImage } from '@/sanity/lib/image';
 
 import Link from 'next/link';
 import { ItemType } from '@/types/types';
+import calculatePrice from '@/helpers/calculatePrice';
 
 function CartItem({ item }: { item: ItemType }) {
   const dispatch = useDispatch();
@@ -15,11 +16,10 @@ function CartItem({ item }: { item: ItemType }) {
 
   const cost =
     item.quantity *
-    (item.product.discount
-      ? Number(
-          (item.product.price * (1 - item.product.discount / 100)).toFixed(2)
-        )
-      : Number(item.product.price.toFixed(2)));
+    calculatePrice({
+      discount: item.product.discount,
+      price: item.product.price,
+    });
 
   return (
     <div className='flex gap-6' key={item.product._id}>

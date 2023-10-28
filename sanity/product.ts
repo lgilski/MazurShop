@@ -1,5 +1,3 @@
-import { type } from 'os';
-
 export default {
   name: 'product',
   title: 'Product',

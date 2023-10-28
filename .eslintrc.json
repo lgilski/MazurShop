@@ -16,6 +16,7 @@
     // "@typescript-eslint/no-unused-vars":
     //   process.env.NODE_ENV === "production" ? "warn" : "error",
     "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-namespace": "off"
+    "@typescript-eslint/no-namespace": "off",
+    "import/no-anonymous-default-export": "off"
   }
 }

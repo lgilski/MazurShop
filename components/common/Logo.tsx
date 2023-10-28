@@ -6,7 +6,7 @@ function Logo({
   otherProps?: any;
 }) {
   return (
-    <div className={`font-semibold ${className}`} {...otherProps}>
+    <div className={`font-semibold text-black ${className}`} {...otherProps}>
       Mazur<span className='text-green-500'>Shop</span>
     </div>
   );

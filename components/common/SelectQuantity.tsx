@@ -1,6 +1,6 @@
 import { cartActions } from '@/store/cart';
 import { ItemType, ProductType } from '@/types/types';
-import { forwardRef, useEffect, useState } from 'react';
+import { RefObject, forwardRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const SelectQuantity = forwardRef(function (
@@ -12,6 +12,16 @@ const SelectQuantity = forwardRef(function (
   const [numberToAdd, setNumberToAdd] = useState<number | string>(1);
 
   const increment = function () {
+    // item && item.quantity < item.product.leftInStock
+    //   ? dispatch(
+    //       cartActions.updateQuantity({
+    //         product: item.product,
+    //         quantity: Number(item.quantity) + 1,
+    //       })
+    //     )
+    //   : Number(numberToAdd) < Number(product?.leftInStock) &&
+    //     setNumberToAdd(prevState => Number(prevState) + 1);
+
     if (item) {
       if (item.quantity >= item.product.leftInStock) return;
 

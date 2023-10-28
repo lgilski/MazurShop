@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
 import { ProductType, WholeState } from '@/types/types';
+import Image from 'next/image';
 
 function ProductDetails({ product }: { product: ProductType }) {
   // console.log(product);
@@ -16,7 +17,7 @@ function ProductDetails({ product }: { product: ProductType }) {
     (state: WholeState) => state.product.products
   ).find(innerProduct => innerProduct._id === product._id);
 
-  const sendAddToCart = function () {
+  const handleAddToCart = function () {
     if (currentProduct?.leftInStock === 0) return;
 
     dispatch(
@@ -35,13 +36,18 @@ function ProductDetails({ product }: { product: ProductType }) {
         <div className='max-w-7xl  mx-auto mb-16 mt-32 '>
           <section className='grid grid-cols-[2fr_1fr] gap-8 items-start'>
             <div className='flex flex-col max-w-full bg-white rounded-2xl p-4  shadow-md'>
-              <img
+              <Image
+                alt=''
                 className='w-full aspect-video block object-cover rounded-lg'
                 src={
                   currentProduct?.image
                     ? urlForImage(currentProduct?.image[imgIndex]).toString()
                     : ''
                 }
+                width={0}
+                height={0}
+                sizes='100vw'
+                style={{ width: '100%', height: 'auto' }}
               />
               <div className='flex gap-4 mt-4 justify-center items-center'>
                 {currentProduct?.image.map((imageInner, index) => (
@@ -52,7 +58,8 @@ function ProductDetails({ product }: { product: ProductType }) {
                       'after:content-[""] after:absolute after:top-0 after:right-0 after:w-full after:h-full after:inline-block after:bg-detail-image after:z-[2]'
                     }`}
                   >
-                    <img
+                    <Image
+                      alt=''
                       className={` relative aspect-square block object-cover cursor-pointer`}
                       src={
                         currentProduct?.image
@@ -60,6 +67,10 @@ function ProductDetails({ product }: { product: ProductType }) {
                           : ''
                       }
                       onClick={() => setImgIndex(index)}
+                      width={0}
+                      height={0}
+                      sizes='100vw'
+                      style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
                 ))}
@@ -92,14 +103,14 @@ function ProductDetails({ product }: { product: ProductType }) {
               </div>
               <div className='flex flex-col'>
                 <button
-                  onClick={sendAddToCart}
+                  onClick={handleAddToCart}
                   className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 mb-4'
                 >
                   Add to cart
                 </button>
                 <button
                   onClick={() => {
-                    sendAddToCart();
+                    handleAddToCart();
                     dispatch(cartActions.setShowCart());
                   }}
                   className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200'

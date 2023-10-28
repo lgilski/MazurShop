@@ -1,3 +1,4 @@
+import calculatePrice from '@/helpers/calculatePrice';
 import { ItemType } from '@/types/types';
 
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
@@ -24,14 +25,11 @@ export default async function handler(req: any, res: any) {
             .replace('-webp', '.webp')
             .replace('-jpg', '.jpg');
 
-          const priceToDisplay = item.product.discount
-            ? Number(
-                (
-                  item.product.price *
-                  (1 - item.product.discount / 100)
-                ).toFixed(2)
-              ) * 100
-            : item.product.price * 100;
+          const priceToDisplay =
+            calculatePrice({
+              discount: item.product.discount,
+              price: item.product.price,
+            }) * 100;
 
           return {
             price_data: {
