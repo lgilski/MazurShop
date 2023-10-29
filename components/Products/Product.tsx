@@ -5,25 +5,45 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import SelectQuantity from '../common/SelectQuantity';
 import Price from '../common/Price';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
-import { ProductType } from '@/types/types';
+import { ProductType, WholeState } from '@/types/types';
 import toast from 'react-hot-toast';
 
 export default function Product({ product }: { product: ProductType }) {
   const ref = useRef<HTMLInputElement | null>(null);
   const source = urlForImage(product.image[0]).toString();
+  const cartItems = useSelector((state: WholeState) => state.cart.items);
 
   const dispatch = useDispatch();
 
   const handleAddToCart = function () {
     if (product.leftInStock <= 0) return;
 
-    // Check if there's max quantity of an item in cart
+    const productQuantityInCart = cartItems.find(
+      cartItem => cartItem.product._id === product._id
+    )?.quantity;
 
-    toast.success(
-      `Added ${Number(ref.current?.value)} of ${product.name} to your cart`
-    );
+    if (productQuantityInCart! >= product.leftInStock) {
+      return toast.error(
+        `There's no more ${product.name} to add to your cart.`
+      );
+    }
+
+    if (
+      product.leftInStock - productQuantityInCart! <
+      Number(ref.current?.value)
+    ) {
+      toast.success(
+        `Added ${product.leftInStock - Number(ref.current?.value)} of ${
+          product.name
+        } to your cart.`
+      );
+    } else {
+      toast.success(
+        `Added ${Number(ref.current?.value)} of ${product.name} to your cart.`
+      );
+    }
 
     dispatch(
       cartActions.addToCart({ product, quantity: Number(ref.current?.value) })
@@ -67,7 +87,11 @@ export default function Product({ product }: { product: ProductType }) {
           <SelectQuantity ref={ref} product={product} />
           <button
             onClick={handleAddToCart}
-            className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200'
+            disabled={product.leftInStock <= 0 ? true : false}
+            className={`text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 ${
+              product.leftInStock <= 0 &&
+              'bg-gray-300 hover:bg-gray-300 text-gray-500'
+            }`}
           >
             Add to cart
           </button>

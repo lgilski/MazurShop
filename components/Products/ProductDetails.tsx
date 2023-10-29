@@ -104,7 +104,11 @@ function ProductDetails({ product }: { product: ProductType }) {
               <div className='flex flex-col'>
                 <button
                   onClick={handleAddToCart}
-                  className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 mb-4'
+                  disabled={currentProduct.leftInStock <= 0 ? true : false}
+                  className={`text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 mb-4 ${
+                    product.leftInStock <= 0 &&
+                    'bg-gray-300 hover:bg-gray-300 text-gray-500'
+                  }`}
                 >
                   Add to cart
                 </button>
@@ -113,7 +117,11 @@ function ProductDetails({ product }: { product: ProductType }) {
                     handleAddToCart();
                     dispatch(cartActions.setShowCart());
                   }}
-                  className='text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200'
+                  disabled={currentProduct.leftInStock <= 0 ? true : false}
+                  className={`text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 ${
+                    product.leftInStock <= 0 &&
+                    'bg-gray-300 hover:bg-gray-300 text-gray-500'
+                  }`}
                 >
                   Buy now
                 </button>

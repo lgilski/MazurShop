@@ -14,7 +14,6 @@ export type WholeState = {
 
 export type CartState = {
   items: ItemType[];
-  totalCost: number;
   showCart: boolean;
 };
 

@@ -3,15 +3,19 @@ import type { SanityDocument } from '@sanity/client';
 import { client, clientRead } from '@/sanity/lib/client';
 import Head from 'next/head';
 import Hero from '@/components/Home/Hero';
+import dynamic from 'next/dynamic';
 import Navigation from '@/components/common/Navigation';
 import Features from '@/components/Home/Features/Features';
-import BestProducts from '@/components/Home/BestProducts';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';
 import About from '@/components/Home/About';
 import ShippingSection from '@/components/Home/ShippingSection';
 import QuoteSection from '@/components/Home/QuoteSection';
 import BuyNowSection from '@/components/Home/BuyNowSection';
+const BestProductsNoSSR = dynamic(
+  () => import('@/components/Home/BestProducts'),
+  { ssr: false }
+);
 
 // export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
 //   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
@@ -54,7 +58,7 @@ export default function Home() {
         <title>MazurShop</title>
       </Head>
       <Hero />
-      <BestProducts />
+      <BestProductsNoSSR />
       <Features />
       <About />
       <ShippingSection />
