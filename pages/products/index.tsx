@@ -10,7 +10,7 @@ export default function ProductsPage() {
   clientRead
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, categories
   }`
     )
     .then(data => dispatch(productActions.setProducts(data)));
@@ -18,7 +18,7 @@ export default function ProductsPage() {
   clientRead
     .listen(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, categories
   }`
     )
     .subscribe(async update => {

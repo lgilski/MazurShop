@@ -1,8 +1,13 @@
 import { SanityDocument } from '@sanity/client';
+import dynamic from 'next/dynamic';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { groq } from 'next-sanity';
 import { client } from '../../sanity/lib/client';
-import ProductDetails from '@/components/Products/ProductDetails';
+// import ProductDetails from '@/components/Products/ProductDetails';
+const ProductDetails = dynamic(
+  () => import('@/components/Products/ProductDetails'),
+  { ssr: false }
+);
 import { ProductType } from '@/types/types';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';
@@ -20,27 +25,36 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }`
   );
 
-  return { paths, fallback: false };
+  return { paths, fallback: 'blocking' };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const queryParams = { slug: params?.product ?? `` };
 
   const product = await client.fetch(productQuery, queryParams);
+  const categorieNames = await client.fetch(
+    groq`*[_type == "category"]{title, _id}`
+  );
 
   return {
     props: {
       product,
+      categorieNames,
     },
+    // revalidate: 1,
   };
 };
 
 export default function ProductDetailsPage({
   product,
+  categorieNames,
 }: {
   product: ProductType;
+  categorieNames: any;
 }) {
   const dispatch = useDispatch();
+
+  console.log(categorieNames);
 
   client
     .fetch(

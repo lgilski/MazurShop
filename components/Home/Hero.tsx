@@ -1,14 +1,20 @@
 import Link from 'next/link';
 
+import image from '@/assets/images/andrew-s-ouo1hbizWwo-unsplash-big.jpg';
+import Image from 'next/image';
+
 function Hero() {
   return (
-    <section className='bg-hero-image bg-fixed bg-cover bg-center h-[700px] w-full mt-[68px]'>
-      <div className='max-w-7xl h-full flex items-center justify-left m-auto'>
-        <div className='max-w-4xl text-left'>
-          <h2 className='text-7xl text-green-050 font-extrabold mb-6'>
+    // bg-hero-image
+    // linear-gradient(to right top, #05400ABF, #207227BF) bg-fixed bg-cover bg-center h-[700px]
+    <section className='bg-gradient-to-tr from-[#05400ABF] to-[#207227BF] h-[550px] bg-fixed bg-cover bg-center w-full mt-[68px]'>
+      <div className='max-w-7xl h-full flex items-center justify-between m-auto'>
+        {/* max-w-4xl */}
+        <div className='max-w-2xl text-left'>
+          <h2 className='text-7xl text-white font-extrabold mb-6'>
             Here you can buy all things necessary for your pets!
           </h2>
-          <p className='text-2xl text-green-100 mb-8'>
+          <p className='text-2xl text-green-050 mb-8'>
             We offer many healthy treats, toys and more.
           </p>
           <Link
@@ -17,6 +23,16 @@ function Hero() {
           >
             Shop now
           </Link>
+        </div>
+        <div className='relative after:content-[""] after:bg-gradient-to-tr after:from-[#05400ABF] after:to-[#207227BF] after:absolute after:top-0 after:left-0 after:block after:w-full after:h-full rounded-lg overflow-hidden w-[550px] after:opacity-60'>
+          <Image
+            src={image}
+            width={550}
+            // fill={true}
+            // height={200}
+            alt=''
+            className=' aspect-video object-cover '
+          />
         </div>
       </div>
     </section>

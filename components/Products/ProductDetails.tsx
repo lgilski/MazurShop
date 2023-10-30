@@ -105,9 +105,10 @@ function ProductDetails({ product }: { product: ProductType }) {
                 <button
                   onClick={handleAddToCart}
                   disabled={currentProduct.leftInStock <= 0 ? true : false}
-                  className={`text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 mb-4 ${
-                    product.leftInStock <= 0 &&
-                    'bg-gray-300 hover:bg-gray-300 text-gray-500'
+                  className={`text-xl flex-grow px-4 py-2 rounded-full duration-200 mb-4 ${
+                    product.leftInStock <= 0
+                      ? 'bg-gray-300 hover:bg-gray-300 text-gray-500'
+                      : 'bg-green-700 text-green-050 hover:bg-green-500'
                   }`}
                 >
                   Add to cart
@@ -118,9 +119,10 @@ function ProductDetails({ product }: { product: ProductType }) {
                     dispatch(cartActions.setShowCart());
                   }}
                   disabled={currentProduct.leftInStock <= 0 ? true : false}
-                  className={`text-xl flex-grow bg-green-700 px-4 py-2 rounded-full text-green-050 hover:bg-green-500 duration-200 ${
-                    product.leftInStock <= 0 &&
-                    'bg-gray-300 hover:bg-gray-300 text-gray-500'
+                  className={`text-xl flex-grow px-4 py-2 rounded-full duration-200 ${
+                    product.leftInStock <= 0
+                      ? 'bg-gray-300 hover:bg-gray-300 text-gray-500'
+                      : 'bg-green-700 text-green-050 hover:bg-green-500'
                   }`}
                 >
                   Buy now

@@ -37,7 +37,7 @@ export default function Home() {
   clientRead
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, categories
   }`
     )
     .then(data => dispatch(productActions.setProducts(data)));
@@ -45,7 +45,7 @@ export default function Home() {
   clientRead
     .listen(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, categories
   }`
     )
     .subscribe(async update => {
@@ -60,8 +60,12 @@ export default function Home() {
       <Hero />
       <BestProductsNoSSR />
       <Features />
-      <About />
-      <ShippingSection />
+      <div>LAST SEEN</div>
+      <div>ALSO IN THIS CATEGORY</div>
+      <div>FOR CATS</div>
+      <div>FOR DOGS</div>
+      {/* <About /> */}
+      {/* <ShippingSection /> */}
       {/* <QuoteSection /> */}
       <BuyNowSection />
     </>
