@@ -20,8 +20,6 @@ export default function Products({
     setSearchedCategories(e);
   };
 
-  console.log(products);
-
   return (
     <>
       {products && (
@@ -75,7 +73,7 @@ export default function Products({
                   return;
 
                 if (
-                  !searchedCategories.every(v =>
+                  !searchedCategories.every((v: any) =>
                     productData.categories.some(
                       category => category.title === v.value
                     )
