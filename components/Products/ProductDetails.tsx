@@ -80,7 +80,7 @@ function ProductDetails({ product }: { product: ProductType }) {
                 {product.categories &&
                   product.categories.map(category => (
                     <div
-                      key={category._key}
+                      key={category._id}
                       className='text-sm uppercase rounded-full bg-green-100 px-2 py-0.5 font-medium text-green-800'
                     >
                       {category.title}
