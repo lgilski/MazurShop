@@ -1,25 +1,18 @@
-import { ProductType, WholeState } from '@/types/types';
+import { ProductType } from '@/types/types';
 import Product from '../Products/Product';
-import { useSelector } from 'react-redux';
+import ProductsSection from '../Products/ProductsSection';
 
-function BestProducts() {
-  const data = useSelector((state: WholeState) => state.product.products);
-
+function BestProducts({ products }: { products: ProductType[] }) {
   return (
     <>
-      {data && (
-        <section className='max-w-7xl mx-auto mt-16 mb-16'>
-          <h4 className='text-5xl text-center mb-8 font-bold text-green-900'>
-            Our best products
-          </h4>
-          <div className='grid grid-cols-3 gap-16'>
-            {data.length > 0 &&
-              data?.map((productData: ProductType) => {
-                if (productData?.shouldBeOnTheBest !== true) return;
-                return <Product key={productData?._id} product={productData} />;
-              })}
-          </div>
-        </section>
+      {products && (
+        <ProductsSection title='Rekomendowane'>
+          {products.length > 0 &&
+            products?.map((productData: ProductType) => {
+              if (productData?.shouldBeOnTheBest !== true) return;
+              return <Product key={productData?._id} product={productData} />;
+            })}
+        </ProductsSection>
       )}
     </>
   );

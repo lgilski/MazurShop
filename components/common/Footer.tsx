@@ -8,47 +8,51 @@ function Footer() {
         <div className='flex flex-col'>
           <Logo className='text-2xl' />
           <div className='text-sm mt-auto'>
-            Copyright &copy; 2023 by MazurShop, Inc. All rights reserved .
+            Copyright &copy; 2023 przez firme MazurShop. Wszelkie prawa
+            zastrzeżone.
           </div>
         </div>
         <div>
-          <h6 className='mb-2'>Contact us</h6>
+          <h6 className='mb-2'>Kontakt</h6>
           <ul className='flex flex-col gap-2 text-lg'>
             <li>test@test.com</li>
             <li>212 242 521</li>
           </ul>
         </div>
         <div>
-          <h6 className='mb-2'>Company</h6>
+          <h6 className='mb-2'>Firma</h6>
           <ul className='flex flex-col gap-2'>
             <li>
               <Link href={''} className='hover:text-grey-500 inline-block'>
-                About MazurShop
+                O MazurShop
               </Link>
             </li>
             <li>
               <Link href={''} className='hover:text-grey-500 inline-block'>
-                Regulations
+                Regulamin
               </Link>
             </li>
             <li>
               <Link href={''} className='hover:text-grey-500 inline-block'>
-                Privacy
+                Prywatność
               </Link>
             </li>
           </ul>
         </div>
         <div>
-          <h6 className='mb-2'>Shop</h6>
+          <h6 className='mb-2'>Sklep</h6>
           <ul className='flex flex-col gap-2'>
             <li>
-              <Link href={''} className='hover:text-grey-500 inline-block'>
-                Products
+              <Link
+                href={'/produkty'}
+                className='hover:text-grey-500 inline-block'
+              >
+                Produkty
               </Link>
             </li>
             <li>
               <Link href={''} className='hover:text-grey-500 inline-block'>
-                Details
+                Szczegóły
               </Link>
             </li>
             {/* <li>

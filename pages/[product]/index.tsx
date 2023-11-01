@@ -1,24 +1,20 @@
-import { SanityDocument } from '@sanity/client';
-import dynamic from 'next/dynamic';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { groq } from 'next-sanity';
-import { client } from '../../sanity/lib/client';
-// import ProductDetails from '@/components/Products/ProductDetails';
-const ProductDetails = dynamic(
-  () => import('@/components/Products/ProductDetails'),
-  { ssr: false }
-);
+import { client, clientRead } from '../../sanity/lib/client';
+import ProductDetails from '@/components/Products/ProductDetails';
 import { ProductType } from '@/types/types';
 import { useDispatch } from 'react-redux';
 import { productActions } from '@/store/product';
 
+// To get referenced data:
+// something[]->
+
 export const productQuery = groq`*[_type == "product" && slug.current == $slug][0]{
-  details, image, leftInStock, name, price, discount, slug, _id
+  details, 'categories': categories[]->{title, _key}, image, leftInStock, name, price, discount, slug, _id,
 }`;
 
-// Prepare Next.js to know which routes already exist
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await client.fetch(
+  const paths = await clientRead.fetch(
     // Referes to PARAM [product], so the "params" must have a "product"
     groq`*[_type == "product" && defined(slug.current)][]{
       "params": { "product": slug.current }
@@ -31,35 +27,29 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const queryParams = { slug: params?.product ?? `` };
 
-  const product = await client.fetch(productQuery, queryParams);
-  const categorieNames = await client.fetch(
-    groq`*[_type == "category"]{title, _id}`
-  );
+  const product = await clientRead.fetch(productQuery, queryParams);
 
   return {
     props: {
       product,
-      categorieNames,
     },
-    // revalidate: 1,
+    revalidate: 60,
   };
 };
 
 export default function ProductDetailsPage({
   product,
-  categorieNames,
 }: {
   product: ProductType;
-  categorieNames: any;
 }) {
   const dispatch = useDispatch();
 
-  console.log(categorieNames);
+  console.log(product);
 
   client
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _key}
   }`
     )
     .then(data => dispatch(productActions.setProducts(data)));
@@ -67,7 +57,7 @@ export default function ProductDetailsPage({
   client
     .listen(
       groq`*[_type == "product" && defined(slug.current)][0]{
-    details, image, leftInStock, name, price, discount, slug, _id
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _key}
   }`
     )
     .subscribe(async update => {

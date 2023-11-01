@@ -61,4 +61,11 @@ export default defineType({
       },
     },
   ],
+  orderings: [
+    {
+      title: 'By title',
+      name: 'byTitle',
+      by: [{ field: 'name', direction: 'asc' }],
+    },
+  ],
 });

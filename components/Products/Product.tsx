@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { urlForImage } from '@/sanity/lib/image';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import SelectQuantity from '../common/SelectQuantity';
 import Price from '../common/Price';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,8 @@ import { ProductType, WholeState } from '@/types/types';
 import toast from 'react-hot-toast';
 
 export default function Product({ product }: { product: ProductType }) {
+  const [lastSeen, setLastSeen] = useState<any>();
+
   const ref = useRef<HTMLInputElement | null>(null);
   const source = urlForImage(product.image[0]).toString();
   const cartItems = useSelector((state: WholeState) => state.cart.items);
@@ -50,6 +52,49 @@ export default function Product({ product }: { product: ProductType }) {
     );
   };
 
+  const saveLastSeen = function () {
+    if (
+      lastSeen.length > 0 &&
+      lastSeen.some((a: any) => a.name === product.name)
+    ) {
+      const withoutCurrent = lastSeen.filter(
+        (a: any) => a.name !== product.name
+      );
+
+      console.log(withoutCurrent);
+
+      localStorage.setItem(
+        'lastSeen',
+        JSON.stringify([
+          { name: product.name, id: product._id },
+          ...withoutCurrent,
+        ])
+      );
+    } else {
+      if (lastSeen.length > 0) {
+        localStorage.setItem(
+          'lastSeen',
+          JSON.stringify([{ name: product.name, id: product._id }, ...lastSeen])
+        );
+      } else {
+        localStorage.setItem(
+          'lastSeen',
+          JSON.stringify([{ name: product.name, id: product._id }])
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    const elements = JSON.parse(localStorage.getItem('lastSeen') || '{}');
+    if (elements) {
+      setLastSeen(elements);
+    }
+  }, []);
+
+  ////////////////////////////////////////////////////////
+  // Implement updateing Cart when values change on server
+
   return (
     <div className='flex flex-col bg-white-100 relative w-full mx-auto rounded-xl overflow-hidden shadow-xl box-border border-2 border-solid border-grey-100'>
       <Image
@@ -69,6 +114,7 @@ export default function Product({ product }: { product: ProductType }) {
       <div className='p-4 flex flex-col flex-grow bg-white'>
         <div className='mb-2'>
           <Link
+            onClick={saveLastSeen}
             href={product.slug.current}
             className='text-2xl font-semibold hover:text-green-700 duration-100'
           >
@@ -78,8 +124,8 @@ export default function Product({ product }: { product: ProductType }) {
             <Price discount={product.discount} price={product.price} />
             <p className='font-medium'>
               {product.leftInStock > 0
-                ? `${product.leftInStock} left in stock`
-                : 'sold out'}
+                ? `${product.leftInStock} sztuk`
+                : 'wyprzedane'}
             </p>
           </div>
         </div>
@@ -94,7 +140,7 @@ export default function Product({ product }: { product: ProductType }) {
                 : 'bg-green-700 text-green-050 hover:bg-green-500'
             }`}
           >
-            Add to cart
+            Dodaj do koszyka
           </button>
         </div>
       </div>

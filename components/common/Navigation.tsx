@@ -13,22 +13,22 @@ function Navigation() {
     .reduce((a, b) => Number(a) + Number(b), 0);
 
   return (
-    <nav className='fixed w-full top-0 px-8 py-4 flex items-baseline justify-between shadow bg-white z-[2]'>
+    <nav className='fixed w-full top-0 px-8 py-4 flex items-baseline justify-between shadow bg-white z-[3]'>
       <Link href='/' className='text-3xl font-bold justify-self-start w-40'>
         <Logo />
       </Link>
       <div className='flex gap-8'>
         <Link
-          href='/products'
+          href='/produkty'
           className='font-medium text-xl text-grey-700 hover:text-green-500 duration-200'
         >
-          Products
+          Produkty
         </Link>
         <Link
           href='/'
           className='font-medium text-xl text-grey-700 hover:text-green-500 duration-200'
         >
-          Regulations
+          Regulamin
         </Link>
         {/* <Link
           href='/'

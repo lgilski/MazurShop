@@ -12,16 +12,16 @@ function Hero() {
         {/* max-w-4xl */}
         <div className='max-w-2xl text-left'>
           <h2 className='text-7xl text-white font-extrabold mb-6'>
-            Here you can buy all things necessary for your pets!
+            Tutaj możesz kupić wszystko potrzebne dla zwierząt!
           </h2>
           <p className='text-2xl text-green-050 mb-8'>
-            We offer many healthy treats, toys and more.
+            Oferujemy wiele zdrowych smakołyków i zabawek.
           </p>
           <Link
-            href={'/products'}
+            href={'/produkty'}
             className='px-8 py-4 bg-green-300 text-green-800 text-2xl rounded-full font-semibold hover:bg-green-700 hover:text-green-100 duration-300'
           >
-            Shop now
+            Kupuj teraz
           </Link>
         </div>
         <div className='relative after:content-[""] after:bg-gradient-to-tr after:from-[#05400ABF] after:to-[#207227BF] after:absolute after:top-0 after:left-0 after:block after:w-full after:h-full rounded-lg overflow-hidden w-[550px] after:opacity-60'>

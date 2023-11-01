@@ -1,56 +1,50 @@
 import { groq } from 'next-sanity';
-import type { SanityDocument } from '@sanity/client';
-import { client, clientRead } from '@/sanity/lib/client';
+import { clientRead } from '@/sanity/lib/client';
 import Head from 'next/head';
 import Hero from '@/components/Home/Hero';
-import dynamic from 'next/dynamic';
-import Navigation from '@/components/common/Navigation';
 import Features from '@/components/Home/Features/Features';
-import { useDispatch } from 'react-redux';
-import { productActions } from '@/store/product';
+import BuyNowSection from '@/components/Home/BuyNowSection';
+import BestProducts from '@/components/Home/BestProducts';
+import { ProductType } from '@/types/types';
+import LastSeen from '@/components/Home/LastSeen';
+import NewestToys from '@/components/Home/NewestToys';
 import About from '@/components/Home/About';
 import ShippingSection from '@/components/Home/ShippingSection';
 import QuoteSection from '@/components/Home/QuoteSection';
-import BuyNowSection from '@/components/Home/BuyNowSection';
-const BestProductsNoSSR = dynamic(
-  () => import('@/components/Home/BestProducts'),
-  { ssr: false }
-);
+import NewestFood from '@/components/Home/NewestFood';
 
-// export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
-//   image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-// }`;
+export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
+  image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, _key, 'categories': categories[]->{title, _key}
+} | order(name asc)`;
 
-// export const getStaticProps = async () => {
-//   const data =
-//     await client.fetch(groq`*[_type == "product" && defined(slug.current)]{
-//     image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-//   }`);
+export const newestToysQuery = groq`*[_type == 'product' && defined(slug.current) && categories[]->{title}.title match 'Zabawka']{
+  _createdAt, image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, _key, 'categories': categories[]->{title, _key}
+} | order(_createdAt desc)[0...3]`;
+export const newestFoodQuery = groq`*[_type == 'product' && defined(slug.current) && categories[]->{title}.title match 'Karma']{
+  _createdAt, image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, _key, 'categories': categories[]->{title, _key}
+} | order(_createdAt desc)[0...3]`;
 
-//   return { props: { data } };
-// };
+export const getStaticProps = async () => {
+  const data = await clientRead.fetch(productsQuery);
+  const newestToysData = await clientRead.fetch(newestToysQuery);
+  const newestFoodData = await clientRead.fetch(newestFoodQuery);
 
-// export default function Home({ data }: { data: SanityDocument[] }) {
-export default function Home() {
-  const dispatch = useDispatch();
+  return {
+    props: { data, newestToysData, newestFoodData },
+    revalidate: 1,
+  };
+};
 
-  clientRead
-    .fetch(
-      groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, categories
-  }`
-    )
-    .then(data => dispatch(productActions.setProducts(data)));
-
-  clientRead
-    .listen(
-      groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, categories
-  }`
-    )
-    .subscribe(async update => {
-      dispatch(productActions.updateProducts(update));
-    });
+export default function Home({
+  data,
+  newestToysData,
+  newestFoodData,
+}: {
+  data: ProductType[];
+  newestToysData: ProductType[];
+  newestFoodData: ProductType[];
+}) {
+  console.log(newestToysData);
 
   return (
     <>
@@ -58,15 +52,14 @@ export default function Home() {
         <title>MazurShop</title>
       </Head>
       <Hero />
-      <BestProductsNoSSR />
+      <BestProducts products={data} />
       <Features />
-      <div>LAST SEEN</div>
-      <div>ALSO IN THIS CATEGORY</div>
-      <div>FOR CATS</div>
-      <div>FOR DOGS</div>
-      {/* <About /> */}
-      {/* <ShippingSection /> */}
+      <LastSeen products={data} />
+      <NewestToys newestToysData={newestToysData} />
+      <NewestFood newestFoodData={newestFoodData} />
       {/* <QuoteSection /> */}
+      {/* <About />
+      <ShippingSection /> */}
       <BuyNowSection />
     </>
   );

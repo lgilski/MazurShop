@@ -5,9 +5,11 @@ import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CartItem from './CartItem';
-import { WholeState } from '@/types/types';
+import { ProductType, WholeState } from '@/types/types';
 import getStripe from '@/helpers/getStripe';
 import calculatePrice from '@/helpers/calculatePrice';
+import { client, clientRead } from '@/sanity/lib/client';
+import { groq } from 'next-sanity';
 
 export const Blur = () => {
   const ref = useRef<Element | null>(null);
@@ -24,7 +26,7 @@ export const Blur = () => {
     ? createPortal(
         <div
           onClick={() => dispatch(cartActions.setShowCart())}
-          className='fixed top-0 left-0 bg-[#000000bf] w-full h-full z-[2] '
+          className='fixed top-0 left-0 bg-[#000000bf] w-full h-full z-[4] '
         />,
         ref.current
       )
@@ -34,7 +36,7 @@ export const Blur = () => {
 function Cart() {
   const showCart = useSelector((state: WholeState) => state.cart.showCart);
   const items = useSelector((state: WholeState) => state.cart.items);
-  const products = useSelector((state: WholeState) => state.product.products);
+  // const products = useSelector((state: WholeState) => state.product.products);
   const dispatch = useDispatch();
 
   const [totalCost, setTotalCost] = useState<number>(0);
@@ -55,7 +57,11 @@ function Cart() {
 
     const data = await response.json();
 
-    const isEnoughtInInventoryArray: boolean[] = items
+    const products: ProductType[] = await clientRead.fetch(
+      groq`*[_type == 'product']`
+    );
+
+    const isEnoughtInInventory: boolean[] = items
       .map(item =>
         products.find(
           product =>
@@ -67,7 +73,7 @@ function Cart() {
       )
       .filter(a => a !== undefined);
 
-    if (isEnoughtInInventoryArray.some((item: boolean) => item === false))
+    if (isEnoughtInInventory.some((item: boolean) => item === false))
       return toast.error('There are not enought items in inventory');
 
     stripe.redirectToCheckout({ sessionId: data.id });
@@ -98,7 +104,7 @@ function Cart() {
   return (
     <>
       <div
-        className={`fixed top-0 right-0 pt-[68px] px-4 h-screen w-[600px] bg-white z-[4] duration-300 overflow-auto ${
+        className={`fixed top-0 right-0 pt-[68px] px-4 h-screen w-[600px] bg-white z-[5] duration-300 overflow-auto ${
           showCart ? '' : 'translate-x-[100%]'
         }`}
       >
@@ -109,11 +115,13 @@ function Cart() {
           <ion-icon name='close-outline' />
         </button>
         {items.length === 0 && <div>There are no products in your cart.</div>}
-        <div className='flex flex-col gap-4'>
-          {items.map(item => (
-            <CartItem key={item.product._id} item={item} />
-          ))}
-        </div>
+        {items.length !== 0 && (
+          <div className='flex flex-col gap-4'>
+            {items.map(item => (
+              <CartItem key={item.product._id} item={item} />
+            ))}
+          </div>
+        )}
         {items.length !== 0 && (
           <div className='mt-12'>
             <p className='text-3xl mb-4 pt-4 border-t border-solid border-grey-300 '>

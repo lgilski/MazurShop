@@ -28,6 +28,7 @@ export type ItemType = {
 
 export type ProductType = {
   _id: string;
+  _key: string;
   name: string;
   slug: {
     current: string;
@@ -38,7 +39,7 @@ export type ProductType = {
   shouldBeOnTheBest: boolean;
   leftInStock: number;
   details: string;
-  categories: { _ref: string; _type: string; _key: string }[];
+  categories: { title: string; _key: string }[];
   image: {
     _key: string;
     _type: string;

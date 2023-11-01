@@ -1,4 +1,4 @@
-import { client } from '@/sanity/lib/client';
+import { client, clientRead } from '@/sanity/lib/client';
 import { groq } from 'next-sanity';
 
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
@@ -25,7 +25,7 @@ const handler = async (req: any, res: any) => {
           )
         : null;
 
-      const data = await client.fetch(productsQuery);
+      const data = await clientRead.fetch(productsQuery);
 
       listLineItems &&
         listLineItems?.data.forEach(async (boughtItem: any) => {
