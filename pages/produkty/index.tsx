@@ -1,9 +1,7 @@
 import Products from '@/components/Products/Products';
-import { client, clientRead } from '@/sanity/lib/client';
-import { productActions } from '@/store/product';
+import { clientRead } from '@/sanity/lib/client';
 import { ProductType } from '@/types/types';
 import { groq } from 'next-sanity';
-import { useDispatch } from 'react-redux';
 
 export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
   image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _key}

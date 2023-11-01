@@ -12,10 +12,15 @@ export default function Products({
   categories: { title: string; _id: string }[];
 }) {
   const [searchedProduct, setSearchedProduct] = useState('');
+  const [searchedCategories, setSearchedCategories] = useState([]);
 
   const selectChange = function (e: any) {
     console.log(e);
+
+    setSearchedCategories(e);
   };
+
+  console.log(products);
 
   return (
     <>
@@ -66,6 +71,15 @@ export default function Products({
                   !productData.name
                     .toLocaleLowerCase()
                     .includes(searchedProduct.toLocaleLowerCase())
+                )
+                  return;
+
+                if (
+                  !searchedCategories.every(v =>
+                    productData.categories.some(
+                      category => category.title === v.value
+                    )
+                  )
                 )
                   return;
 

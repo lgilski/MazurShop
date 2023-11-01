@@ -39,7 +39,7 @@ export type ProductType = {
   shouldBeOnTheBest: boolean;
   leftInStock: number;
   details: string;
-  categories: { title: string; _key: string }[];
+  categories: { title: string; _id: string }[];
   image: {
     _key: string;
     _type: string;
