@@ -37,15 +37,15 @@ function CartItem({ item }: { item: ItemType }) {
         </Link>
         <div className='flex gap-2 items-baseline mb-4'>
           <Price discount={item.product.discount} price={item.product.price} />
-          <p className='font-medium'>per one</p>
+          <p className='font-medium'>za sztukę</p>
         </div>
         <div>
-          <p>Current quantity:</p>
+          <p>Obecna ilość w koszyku:</p>
           <SelectQuantity item={item} ref={ref} />
         </div>
         <div className='mt-auto mb-2 flex justify-between items-baseline'>
           <div className='flex items-baseline gap-1'>
-            <p className='text-xl font-medium'>Cost:</p>
+            <p className='text-xl font-medium'>Cena:</p>
             <p className='text-3xl font-bold text-green-800 '>
               {cost.toFixed(2)}zł
             </p>

@@ -25,7 +25,7 @@ function Navigation() {
           Produkty
         </Link>
         <Link
-          href='/'
+          href='/regulamin'
           className='font-medium text-xl text-grey-700 hover:text-green-500 duration-200'
         >
           Regulamin
