@@ -6,7 +6,7 @@ function NewestToys({ newestToysData }: { newestToysData: ProductType[] }) {
   return (
     <ProductsSection title='Najnowsze zabawki'>
       {newestToysData.map(product => (
-        <Product key={product._key} product={product} />
+        <Product key={product.name} product={product} />
       ))}
     </ProductsSection>
   );

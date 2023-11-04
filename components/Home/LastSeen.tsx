@@ -27,7 +27,7 @@ const LastSeen = function ({ products }: { products: ProductType[] }) {
             )
             .map((seenProduct: ProductType) => {
               if (!seenProduct) return;
-              return <Product key={seenProduct._id} product={seenProduct} />;
+              return <Product key={seenProduct.name} product={seenProduct} />;
             })}
         </ProductsSection>
       )}

@@ -6,7 +6,7 @@ function NewestFood({ newestFoodData }: { newestFoodData: ProductType[] }) {
   return (
     <ProductsSection title='Najnowsze karmy'>
       {newestFoodData.map(product => (
-        <Product key={product._key} product={product} />
+        <Product key={product.name} product={product} />
       ))}
     </ProductsSection>
   );

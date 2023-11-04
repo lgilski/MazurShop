@@ -33,6 +33,10 @@ export const Blur = () => {
     : null;
 };
 
+///////////////////////////////////////////////////////////////
+// Somehow get data from CMS to validate items in the cart
+// Handle localStorage
+
 function Cart() {
   const showCart = useSelector((state: WholeState) => state.cart.showCart);
   const items = useSelector((state: WholeState) => state.cart.items);
@@ -120,7 +124,7 @@ function Cart() {
         {items.length !== 0 && (
           <div className='flex flex-col gap-4'>
             {items.map(item => (
-              <CartItem key={item.product._id} item={item} />
+              <CartItem key={item.product.name} item={item} />
             ))}
           </div>
         )}

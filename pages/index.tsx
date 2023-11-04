@@ -14,14 +14,14 @@ import QuoteSection from '@/components/Home/QuoteSection';
 import NewestFood from '@/components/Home/NewestFood';
 
 export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
-  image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, _key, 'categories': categories[]->{title, _id}
+  image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
 } | order(name asc)`;
 
 export const newestToysQuery = groq`*[_type == 'product' && defined(slug.current) && categories[]->{title}.title match 'Zabawka']{
-  _createdAt, image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, _key, 'categories': categories[]->{title, _id}
+  _createdAt, image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
 } | order(_createdAt desc)[0...3]`;
 export const newestFoodQuery = groq`*[_type == 'product' && defined(slug.current) && categories[]->{title}.title match 'Karma']{
-  _createdAt, image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, _key, 'categories': categories[]->{title, _id}
+  _createdAt, image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
 } | order(_createdAt desc)[0...3]`;
 
 export const getStaticProps = async () => {
@@ -44,13 +44,12 @@ export default function Home({
   newestToysData: ProductType[];
   newestFoodData: ProductType[];
 }) {
-  console.log(newestToysData);
-
   return (
     <>
       <Head>
         <title>MazurShop</title>
       </Head>
+      {/* <Cart products={data} /> */}
       <Hero />
       <BestProducts products={data} />
       <Features />

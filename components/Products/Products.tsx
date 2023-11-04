@@ -144,14 +144,6 @@ export default function Products({
                 }))}
               /> */}
             </div>
-            {/* <select onChange={selectChange}>
-              <option value={''}></option>
-              {categories.map(category => (
-                <option key={category._id} value={category.title}>
-                {category.title}
-                </option>
-                ))}
-              </select> */}
           </div>
           <div className='mx-auto  grid w-full grid-cols-3 gap-16 max-xl:grid-cols-2 max-md:grid-cols-1'>
             {products.length > 0 &&
@@ -173,7 +165,9 @@ export default function Products({
                 )
                   return;
 
-                return <Product key={productData?._id} product={productData} />;
+                return (
+                  <Product key={productData?.name} product={productData} />
+                );
               })}
           </div>
         </section>
