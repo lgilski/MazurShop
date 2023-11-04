@@ -15,7 +15,7 @@ const SelectQuantity = forwardRef(function (
     // item && item.quantity < item.product.leftInStock
     //   ? dispatch(
     //       cartActions.updateQuantity({
-    //         product: item.product,
+    //         product: item.product._id,
     //         quantity: Number(item.quantity) + 1,
     //       })
     //     )
@@ -27,7 +27,7 @@ const SelectQuantity = forwardRef(function (
 
       dispatch(
         cartActions.updateQuantity({
-          product: item.product,
+          productId: item.product._id,
           quantity: Number(item.quantity) + 1,
         })
       );
@@ -42,7 +42,7 @@ const SelectQuantity = forwardRef(function (
 
       dispatch(
         cartActions.updateQuantity({
-          product: item.product,
+          productId: item.product._id,
           quantity: Number(item.quantity) - 1,
         })
       );
@@ -57,14 +57,14 @@ const SelectQuantity = forwardRef(function (
       if (Number(ref?.current?.value) > item.product.leftInStock)
         return dispatch(
           cartActions.updateQuantity({
-            product: item.product,
+            productId: item.product._id,
             quantity: item.product.leftInStock,
           })
         );
 
       dispatch(
         cartActions.updateQuantity({
-          product: item.product,
+          productId: item.product._id,
           quantity: ref?.current!.value,
         })
       );
@@ -80,7 +80,10 @@ const SelectQuantity = forwardRef(function (
     if (item) {
       if (Number(ref?.current?.value) === 0)
         return dispatch(
-          cartActions.updateQuantity({ product: item.product, quantity: 1 })
+          cartActions.updateQuantity({
+            productId: item.product._id,
+            quantity: 1,
+          })
         );
     } else if (!item) {
       if (Number(ref?.current?.value) === 0) return setNumberToAdd(1);

@@ -23,7 +23,7 @@ export default function Product({ product }: { product: ProductType }) {
     if (product.leftInStock <= 0) return;
 
     const productQuantityInCart = cartItems.find(
-      cartItem => cartItem.product._id === product._id
+      cartItem => cartItem.productId === product._id
     )?.quantity;
 
     if (productQuantityInCart! >= product.leftInStock) {
@@ -48,7 +48,10 @@ export default function Product({ product }: { product: ProductType }) {
     }
 
     dispatch(
-      cartActions.addToCart({ product, quantity: Number(ref.current?.value) })
+      cartActions.addToCart({
+        productId: product._id,
+        quantity: Number(ref.current?.value),
+      })
     );
   };
 
@@ -60,8 +63,6 @@ export default function Product({ product }: { product: ProductType }) {
       const withoutCurrent = lastSeen.filter(
         (a: any) => a.name !== product.name
       );
-
-      console.log(withoutCurrent);
 
       localStorage.setItem(
         'lastSeen',

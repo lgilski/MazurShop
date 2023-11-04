@@ -51,7 +51,11 @@ function CartItem({ item }: { item: ItemType }) {
             </p>
           </div>
           <button
-            onClick={() => dispatch(cartActions.deleteItemFromCart(item))}
+            onClick={() =>
+              dispatch(
+                cartActions.deleteItemFromCart({ productId: item.product._id })
+              )
+            }
             className='w-6 h-6 [&_ion-icon]:w-full [&_ion-icon]:h-full mr-6 hover:text-red-500 duration-200'
           >
             <ion-icon name='trash-outline' />

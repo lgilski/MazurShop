@@ -13,12 +13,17 @@ export type WholeState = {
 };
 
 export type CartState = {
-  items: ItemType[];
+  items: ItemData[];
   showCart: boolean;
 };
 
 export type ProductState = {
   products: ProductType[];
+};
+
+export type ItemData = {
+  productId: string;
+  quantity: number;
 };
 
 export type ItemType = {

@@ -22,7 +22,7 @@ function ProductDetails({ product }: { product: ProductType }) {
 
     dispatch(
       cartActions.addToCart({
-        product,
+        productId: product._id,
         quantity: Number(ref.current?.value),
       })
     );

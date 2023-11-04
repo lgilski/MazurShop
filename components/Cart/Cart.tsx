@@ -1,15 +1,61 @@
 import toast from 'react-hot-toast';
 import { cartActions } from '@/store/cart';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CartItem from './CartItem';
-import { ProductType, WholeState } from '@/types/types';
+import { ItemType, ProductType, WholeState } from '@/types/types';
 import getStripe from '@/helpers/getStripe';
 import calculatePrice from '@/helpers/calculatePrice';
-import { client, clientRead } from '@/sanity/lib/client';
+import { clientRead } from '@/sanity/lib/client';
 import { groq } from 'next-sanity';
+
+const fetchProductsQuery = groq`*[_type == 'product']`;
+
+const fetchProductsDetailsQuery = groq`*[_type == "product" && defined(slug.current)]{
+  image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
+} | order(name asc)`;
+
+function useProductsDetails() {
+  const [productsData, setProductsData] = useState<ProductType[]>();
+
+  useEffect(() => {
+    clientRead
+      .fetch(fetchProductsDetailsQuery)
+      .then(data => setProductsData(data));
+
+    clientRead
+      .listen(fetchProductsDetailsQuery)
+      .subscribe(async (update: any) => {
+        setProductsData(update);
+      });
+  }, []);
+
+  return productsData;
+}
+
+function calculateTotalCost(items: ItemType[] | undefined) {
+  if (!items || items.length === 0) return null;
+
+  console.log(items, !items, items.length);
+
+  if (items) {
+    const totalCostToAdd = items.map(item =>
+      (
+        item.quantity *
+        calculatePrice({
+          discount: item.product?.discount,
+          price: item.product?.price,
+        })
+      ).toFixed(2)
+    );
+
+    return totalCostToAdd.reduce((accumulator, currentValue) => {
+      return Number(accumulator.toFixed(2)) + Number(currentValue);
+    }, 0);
+  }
+}
 
 export const Blur = () => {
   const ref = useRef<Element | null>(null);
@@ -26,7 +72,7 @@ export const Blur = () => {
     ? createPortal(
         <div
           onClick={() => dispatch(cartActions.setShowCart())}
-          className='fixed top-0 left-0 bg-[#000000bf] w-full h-full z-[4] '
+          className='fixed top-0 left-0 bg-[#000000bf] w-full h-full z-[4]'
         />,
         ref.current
       )
@@ -40,10 +86,9 @@ export const Blur = () => {
 function Cart() {
   const showCart = useSelector((state: WholeState) => state.cart.showCart);
   const items = useSelector((state: WholeState) => state.cart.items);
-  // const products = useSelector((state: WholeState) => state.product.products);
   const dispatch = useDispatch();
 
-  const [totalCost, setTotalCost] = useState<number>(0);
+  const productsData = useProductsDetails();
 
   const handleCheckout = async function () {
     const stripe = await getStripe();
@@ -61,15 +106,13 @@ function Cart() {
 
     const data = await response.json();
 
-    const products: ProductType[] = await clientRead.fetch(
-      groq`*[_type == 'product']`
-    );
+    const products: ProductType[] = await clientRead.fetch(fetchProductsQuery);
 
     const isEnoughtInInventory: boolean[] = items
       .map(item =>
         products.find(
           product =>
-            item.product._id === product._id &&
+            item.productId === product._id &&
             product.leftInStock >= item.quantity
         )
           ? true
@@ -83,27 +126,16 @@ function Cart() {
     stripe.redirectToCheckout({ sessionId: data.id });
   };
 
-  function addAllCosts() {
-    const totalCostToAdd = items.map(item =>
-      (
-        item.quantity *
-        calculatePrice({
-          discount: item.product.discount,
-          price: item.product.price,
-        })
-      ).toFixed(2)
-    );
+  const itemsData = items?.map(item => {
+    return {
+      product: productsData?.find(
+        productData => productData._id === item.productId
+      )!,
+      quantity: item.quantity,
+    };
+  });
 
-    setTotalCost(
-      totalCostToAdd.reduce((accumulator, currentValue) => {
-        return Number(accumulator.toFixed(2)) + Number(currentValue);
-      }, 0)
-    );
-  }
-
-  useEffect(() => {
-    addAllCosts();
-  }, [items]);
+  const totalCost = useMemo(() => calculateTotalCost(itemsData), [itemsData]);
 
   return (
     <>
@@ -118,22 +150,22 @@ function Cart() {
         >
           <ion-icon name='close-outline' />
         </button>
-        {items.length === 0 && (
+        {itemsData.length === 0 && (
           <div>Nie ma żadnych produktów w Twoim koszyku.</div>
         )}
-        {items.length !== 0 && (
+        {itemsData.length !== 0 && (
           <div className='flex flex-col gap-4'>
-            {items.map(item => (
-              <CartItem key={item.product.name} item={item} />
+            {itemsData.map(item => (
+              <CartItem key={item?.product!.name} item={item} />
             ))}
           </div>
         )}
-        {items.length !== 0 && (
+        {itemsData.length !== 0 && (
           <div className='mt-12'>
             <p className='text-3xl mb-4 pt-4 border-t border-solid border-grey-300 '>
               Finalny koszt:{' '}
               <span className='text-green-800 text-5xl font-bold'>
-                {totalCost.toFixed(2)}zł
+                {totalCost?.toFixed(2)}zł
               </span>
             </p>
             <button

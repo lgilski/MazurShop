@@ -11,40 +11,45 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action) {
+      console.log(action.payload);
+
       if (
-        !state.items.find(
-          item => item.product._id === action.payload.product._id
-        )
+        !state.items.find(item => item.productId === action.payload.productId)
       ) {
         state.items.push(action.payload);
       } else {
         state.items.find(
-          item => item.product._id === action.payload.product._id
+          item => item.productId === action.payload.productId
         )!.quantity += Number(action.payload.quantity);
       }
 
-      const updatedItem = state.items.find(
-        item => item.product._id === action.payload.product._id
-      );
+      /////////////////////////////////
+      // Handle this somewhere elese!!!
 
-      if (updatedItem!.quantity > updatedItem!.product.leftInStock) {
-        state.items.find(
-          item => item.product._id === action.payload.product._id
-        )!.quantity = updatedItem!.product.leftInStock;
-      }
+      // const updatedItem = state.items.find(
+      //   item => item.productId === action.payload.productId
+      // );
+
+      // if (updatedItem!.quantity > updatedItem!.product.leftInStock) {
+      //   state.items.find(
+      //     item => item.productId === action.payload.productId
+      //   )!.quantity = updatedItem!.product.leftInStock;
+      // }
 
       return state;
     },
     deleteItemFromCart(state, action) {
       state.items = state.items.filter(
-        item => item.product._id !== action.payload.product._id
+        item => item.productId !== action.payload.productId
       );
 
       return state;
     },
     updateQuantity(state, action) {
+      console.log();
+
       state.items.find(
-        item => item.product._id === action.payload.product._id
+        item => item.productId === action.payload.productId
       )!.quantity = action.payload.quantity;
 
       return state;
