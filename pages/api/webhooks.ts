@@ -1,11 +1,7 @@
+import { productsDetailsQuery } from '@/api/queries';
 import { client, clientRead } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
 
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
-
-export const productsQuery = groq`*[_type == "product" && defined(slug.current)]{
-  image, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-}`;
 
 export async function updateDocumentLeftInStock(_id: string, quantity: number) {
   const result = await client
@@ -25,7 +21,7 @@ const handler = async (req: any, res: any) => {
           )
         : null;
 
-      const data = await clientRead.fetch(productsQuery);
+      const data = await clientRead.fetch(productsDetailsQuery);
 
       listLineItems &&
         listLineItems?.data.forEach(async (boughtItem: any) => {

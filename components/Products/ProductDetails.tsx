@@ -6,26 +6,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
 import { ProductType, WholeState } from '@/types/types';
 import Image from 'next/image';
+import checkIfQuantityIsValid from '@/helpers/checkIfQuantityIsValid';
 
 function ProductDetails({ product }: { product: ProductType }) {
-  // console.log(product);
-
   const [imgIndex, setImgIndex] = useState(0);
+  const cartItems = useSelector((state: WholeState) => state.cart.items);
+
   const dispatch = useDispatch();
 
-  // const currentProduct = useSelector(
-  //   (state: WholeState) => state.product.products
-  // ).find(innerProduct => innerProduct._id === product._id);
+  console.log(product.categories);
 
   const handleAddToCart = function () {
-    if (product?.leftInStock === 0) return;
+    const itemObject = checkIfQuantityIsValid({
+      cartItems,
+      product,
+      currentQuantityToAdd: Number(ref.current?.value),
+    });
 
-    dispatch(
-      cartActions.addToCart({
-        productId: product._id,
-        quantity: Number(ref.current?.value),
-      })
-    );
+    if (!itemObject) return;
+
+    dispatch(cartActions.addToCart(itemObject));
   };
 
   const ref = useRef<HTMLInputElement | null>(null);
@@ -33,7 +33,7 @@ function ProductDetails({ product }: { product: ProductType }) {
   return (
     <>
       {product && (
-        <div className='max-w-7xl  mx-auto mb-16 mt-32 '>
+        <div key={product.name} className='max-w-7xl  mx-auto mb-16 mt-32 '>
           <section className='grid grid-cols-[2fr_1fr] gap-8 items-start'>
             <div className='flex flex-col max-w-full bg-white rounded-2xl p-4  shadow-md'>
               <Image
@@ -80,7 +80,7 @@ function ProductDetails({ product }: { product: ProductType }) {
                 {product.categories &&
                   product.categories.map(category => (
                     <div
-                      key={category._id}
+                      key={category.title}
                       className='text-sm uppercase rounded-full bg-green-100 px-2 py-0.5 font-medium text-green-800'
                     >
                       {category.title}

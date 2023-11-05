@@ -8,7 +8,7 @@ import Price from '../common/Price';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '@/store/cart';
 import { ProductType, WholeState } from '@/types/types';
-import toast from 'react-hot-toast';
+import checkIfQuantityIsValid from '@/helpers/checkIfQuantityIsValid';
 
 export default function Product({ product }: { product: ProductType }) {
   const [lastSeen, setLastSeen] = useState<any>();
@@ -20,39 +20,15 @@ export default function Product({ product }: { product: ProductType }) {
   const dispatch = useDispatch();
 
   const handleAddToCart = function () {
-    if (product.leftInStock <= 0) return;
+    const itemObject = checkIfQuantityIsValid({
+      cartItems,
+      product,
+      currentQuantityToAdd: Number(ref.current?.value),
+    });
 
-    const productQuantityInCart = cartItems.find(
-      cartItem => cartItem.productId === product._id
-    )?.quantity;
+    if (!itemObject) return;
 
-    if (productQuantityInCart! >= product.leftInStock) {
-      return toast.error(
-        `There's no more ${product.name} to add to your cart.`
-      );
-    }
-
-    if (
-      product.leftInStock - productQuantityInCart! <
-      Number(ref.current?.value)
-    ) {
-      toast.success(
-        `Added ${product.leftInStock - Number(ref.current?.value)} of ${
-          product.name
-        } to your cart.`
-      );
-    } else {
-      toast.success(
-        `Added ${Number(ref.current?.value)} of ${product.name} to your cart.`
-      );
-    }
-
-    dispatch(
-      cartActions.addToCart({
-        productId: product._id,
-        quantity: Number(ref.current?.value),
-      })
-    );
+    dispatch(cartActions.addToCart(itemObject));
   };
 
   const saveLastSeen = function () {
@@ -92,9 +68,6 @@ export default function Product({ product }: { product: ProductType }) {
       setLastSeen(elements);
     }
   }, []);
-
-  ////////////////////////////////////////////////////////
-  // Implement updateing Cart when values change on server
 
   return (
     <div className='flex flex-col bg-white-100 relative w-full mx-auto rounded-xl overflow-hidden shadow-xl box-border border-2 border-solid border-grey-100'>

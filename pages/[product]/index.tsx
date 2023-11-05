@@ -10,7 +10,7 @@ import { productActions } from '@/store/product';
 // something[]->
 
 export const productQuery = groq`*[_type == "product" && slug.current == $slug][0]{
-  details, 'categories': categories[]->{title, _key}, image, leftInStock, name, price, discount, slug, _id,
+  details, 'categories': categories[]->{title, _id}, image, leftInStock, name, price, discount, slug, _id,
 }`;
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -49,7 +49,7 @@ export default function ProductDetailsPage({
   client
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _key}
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
   }`
     )
     .then(data => dispatch(productActions.setProducts(data)));
@@ -57,7 +57,7 @@ export default function ProductDetailsPage({
   client
     .listen(
       groq`*[_type == "product" && defined(slug.current)][0]{
-    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _key}
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
   }`
     )
     .subscribe(async update => {

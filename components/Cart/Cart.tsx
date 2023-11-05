@@ -9,27 +9,17 @@ import { ItemType, ProductType, WholeState } from '@/types/types';
 import getStripe from '@/helpers/getStripe';
 import calculatePrice from '@/helpers/calculatePrice';
 import { clientRead } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
-
-const fetchProductsQuery = groq`*[_type == 'product']`;
-
-const fetchProductsDetailsQuery = groq`*[_type == "product" && defined(slug.current)]{
-  image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
-} | order(name asc)`;
+import { allProductsQuery, productsDetailsQuery } from '@/api/queries';
 
 function useProductsDetails() {
   const [productsData, setProductsData] = useState<ProductType[]>();
 
   useEffect(() => {
-    clientRead
-      .fetch(fetchProductsDetailsQuery)
-      .then(data => setProductsData(data));
+    clientRead.fetch(productsDetailsQuery).then(data => setProductsData(data));
 
-    clientRead
-      .listen(fetchProductsDetailsQuery)
-      .subscribe(async (update: any) => {
-        setProductsData(update);
-      });
+    clientRead.listen(productsDetailsQuery).subscribe(async (update: any) => {
+      setProductsData(update);
+    });
   }, []);
 
   return productsData;
@@ -37,8 +27,6 @@ function useProductsDetails() {
 
 function calculateTotalCost(items: ItemType[] | undefined) {
   if (!items || items.length === 0) return null;
-
-  console.log(items, !items, items.length);
 
   if (items) {
     const totalCostToAdd = items.map(item =>
@@ -106,7 +94,7 @@ function Cart() {
 
     const data = await response.json();
 
-    const products: ProductType[] = await clientRead.fetch(fetchProductsQuery);
+    const products: ProductType[] = await clientRead.fetch(allProductsQuery);
 
     const isEnoughtInInventory: boolean[] = items
       .map(item =>
