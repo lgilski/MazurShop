@@ -84,42 +84,6 @@ function Cart() {
 
   const productsData = useProductsDetails();
 
-  const handleCheckout = async function () {
-    const stripe = await getStripe();
-    toast('Redirecting...');
-
-    const response = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(items),
-    });
-
-    if (response.status === 500) return;
-
-    const data = await response.json();
-
-    const products: ProductType[] = await clientRead.fetch(allProductsQuery);
-
-    const isEnoughtInInventory: boolean[] = items
-      .map(item =>
-        products.find(
-          product =>
-            item.productId === product._id &&
-            product.leftInStock >= item.quantity
-        )
-          ? true
-          : false
-      )
-      .filter(a => a !== undefined);
-
-    if (isEnoughtInInventory.some((item: boolean) => item === false))
-      return toast.error('There are not enought items in inventory');
-
-    stripe.redirectToCheckout({ sessionId: data.id });
-  };
-
   const itemsData: any = items?.map(item => {
     if (!productsData) return;
 
@@ -130,9 +94,44 @@ function Cart() {
       quantity: item.quantity,
     };
   });
-  // .filter(function (element) {
-  //   return element !== undefined;
-  // });
+
+  const handleCheckout = async function () {
+    const stripe = await getStripe();
+    toast('Redirecting...');
+
+    const response = await fetch('/api/stripe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(itemsData),
+    });
+
+    if (response.status === 500) return;
+
+    const data = await response.json();
+
+    const products: ProductType[] = await clientRead.fetch(allProductsQuery);
+
+    const isEnoughtInInventory: boolean[] = itemsData
+      .map((item:any )=>
+        products.find(
+          product =>
+            item.productId === product._id &&
+            product.leftInStock >= item.quantity
+        )
+          ? true
+          : false
+      )
+      .filter((a:any) => a !== undefined);
+
+    if (isEnoughtInInventory.some((item: boolean) => item === false))
+      return toast.error('There are not enought items in inventory');
+
+    stripe.redirectToCheckout({ sessionId: data.id });
+  };
+
+  
 
   const totalCost = useMemo(
     () => calculateTotalCost(itemsData.includes(undefined) ? null : itemsData),
