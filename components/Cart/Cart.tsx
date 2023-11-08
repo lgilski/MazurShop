@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CartItem from './CartItem';
-import { ItemType, ProductType, WholeState } from '@/types/types';
+import { ItemData, ItemType, ProductType, WholeState } from '@/types/types';
 import getStripe from '@/helpers/getStripe';
 import calculatePrice from '@/helpers/calculatePrice';
 import { clientRead } from '@/sanity/lib/client';
@@ -111,27 +111,15 @@ function Cart() {
 
     const data = await response.json();
 
-    const products: ProductType[] = await clientRead.fetch(allProductsQuery);
-
-    const isEnoughtInInventory: boolean[] = itemsData
-      .map((item:any )=>
-        products.find(
-          product =>
-            item.productId === product._id &&
-            product.leftInStock >= item.quantity
-        )
-          ? true
-          : false
-      )
-      .filter((a:any) => a !== undefined);
+    const isEnoughtInInventory: boolean[] = itemsData.map(
+      (item: ItemType) => item.product.leftInStock >= item.quantity
+    );
 
     if (isEnoughtInInventory.some((item: boolean) => item === false))
       return toast.error('There are not enought items in inventory');
 
     stripe.redirectToCheckout({ sessionId: data.id });
   };
-
-  
 
   const totalCost = useMemo(
     () => calculateTotalCost(itemsData.includes(undefined) ? null : itemsData),
