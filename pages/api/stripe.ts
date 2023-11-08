@@ -10,9 +10,6 @@ export default async function handler(req: any, res: any) {
       const session = await stripe.checkout.sessions.create({
         submit_type: 'pay',
         payment_method_types: ['card', 'paypal', 'p24', 'blik'],
-        payment_intent_data: {
-          capture_method: 'manual',
-        },
         billing_address_collection: 'required',
         shipping_options: [
           { shipping_rate: 'shr_1NuywcG8O1OemN5VNCUDBM3v' },
@@ -47,6 +44,9 @@ export default async function handler(req: any, res: any) {
           };
         }),
         mode: 'payment',
+        // payment_intent_data: {
+        //   capture_method: 'manual',
+        // },
         success_url: `${req.headers.origin}/?success=true`,
         cancel_url: `${req.headers.origin}/?canceled=true`,
       });
