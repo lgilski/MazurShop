@@ -44,9 +44,9 @@ export default async function handler(req: any, res: any) {
           };
         }),
         mode: 'payment',
-        payment_intent_data: {
-          capture_method: 'manual',
-        },
+        // payment_intent_data: {
+        //   capture_method: 'manual',
+        // },
         success_url: `${req.headers.origin}/?success=true`,
         cancel_url: `${req.headers.origin}/?canceled=true`,
       });
