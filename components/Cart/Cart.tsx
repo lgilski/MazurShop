@@ -16,16 +16,23 @@ function useProductsDetails() {
 
   useEffect(() => {
     clientRead.fetch(productsDetailsQuery).then(data => setProductsData(data));
-
-    clientRead.listen(productsDetailsQuery).subscribe(async (update: any) => {
-      setProductsData(update);
-    });
   }, []);
+  clientRead.listen(productsDetailsQuery).subscribe(async (update: any) => {
+    const indexToChange = productsData?.findIndex(
+      product => product._id === update.result._id
+    );
+
+    if (indexToChange && productsData) {
+      let newData = [...productsData];
+      newData[indexToChange] = update.result;
+      setProductsData(newData);
+    }
+  });
 
   return productsData;
 }
 
-function calculateTotalCost(items: ItemType[] | undefined) {
+function calculateTotalCost(items: ItemType[] | null) {
   if (!items || items.length === 0) return null;
 
   if (items) {
@@ -68,7 +75,6 @@ export const Blur = () => {
 };
 
 ///////////////////////////////////////////////////////////////
-// Somehow get data from CMS to validate items in the cart
 // Handle localStorage
 
 function Cart() {
@@ -114,7 +120,9 @@ function Cart() {
     stripe.redirectToCheckout({ sessionId: data.id });
   };
 
-  const itemsData = items?.map(item => {
+  const itemsData: any = items?.map(item => {
+    if (!productsData) return;
+
     return {
       product: productsData?.find(
         productData => productData._id === item.productId
@@ -122,8 +130,22 @@ function Cart() {
       quantity: item.quantity,
     };
   });
+  // .filter(function (element) {
+  //   return element !== undefined;
+  // });
 
-  const totalCost = useMemo(() => calculateTotalCost(itemsData), [itemsData]);
+  const totalCost = useMemo(
+    () => calculateTotalCost(itemsData.includes(undefined) ? null : itemsData),
+    [itemsData]
+  );
+
+  useEffect(() => {
+    console.log(productsData);
+  }, [productsData]);
+
+  useEffect(() => {
+    // Handle loading data from localStorage at the beginning
+  }, []);
 
   return (
     <>
@@ -143,9 +165,10 @@ function Cart() {
         )}
         {itemsData.length !== 0 && (
           <div className='flex flex-col gap-4'>
-            {itemsData.map(item => (
-              <CartItem key={item?.product!.name} item={item} />
-            ))}
+            {itemsData.map((item: any) => {
+              if (item?.product !== null)
+                return <CartItem key={item?.product!.name} item={item} />;
+            })}
           </div>
         )}
         {itemsData.length !== 0 && (

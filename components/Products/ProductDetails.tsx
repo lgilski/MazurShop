@@ -9,12 +9,11 @@ import Image from 'next/image';
 import checkIfQuantityIsValid from '@/helpers/checkIfQuantityIsValid';
 
 function ProductDetails({ product }: { product: ProductType }) {
-  const [imgIndex, setImgIndex] = useState(0);
+  const dispatch = useDispatch();
   const cartItems = useSelector((state: WholeState) => state.cart.items);
 
-  const dispatch = useDispatch();
-
-  console.log(product.categories);
+  const [imgIndex, setImgIndex] = useState(0);
+  const ref = useRef<HTMLInputElement | null>(null);
 
   const handleAddToCart = function () {
     const itemObject = checkIfQuantityIsValid({
@@ -27,8 +26,6 @@ function ProductDetails({ product }: { product: ProductType }) {
 
     dispatch(cartActions.addToCart(itemObject));
   };
-
-  const ref = useRef<HTMLInputElement | null>(null);
 
   return (
     <>
