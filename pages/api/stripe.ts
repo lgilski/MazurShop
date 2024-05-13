@@ -61,7 +61,7 @@ export default async function handler(req: any, res: any) {
             quantity: item.quantity,
           };
         }),
-        expires_at: Math.floor(Date.now() / 1000) + 2,
+        // expires_at: Math.floor(Date.now() / 1000) + 2,
         mode: 'payment',
         // Causes errors maybe??????
         // payment_intent_data: {
