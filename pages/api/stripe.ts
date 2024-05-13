@@ -28,7 +28,7 @@ export default async function handler(req: any, res: any) {
       const session = await stripe.checkout.sessions.create({
         submit_type: 'pay',
         payment_method_types: ['card', 'paypal', 'p24', 'blik'],
-        billing_address_collection: 'required',
+        shipping_address_collection: 'required',
         shipping_options: [
           { shipping_rate: 'shr_1NuywcG8O1OemN5VNCUDBM3v' },
           { shipping_rate: 'shr_1NuyxKG8O1OemN5VMkoDIVZq' },
@@ -61,7 +61,7 @@ export default async function handler(req: any, res: any) {
             quantity: item.quantity,
           };
         }),
-        // expires_at: Math.floor(Date.now() / 1000) + 2,
+        expires_at: Math.floor(Date.now() / 1000) + 2,
         mode: 'payment',
         // Causes errors maybe??????
         // payment_intent_data: {
@@ -73,11 +73,11 @@ export default async function handler(req: any, res: any) {
 
       // console.log('SESSION: ', session);
 
-      res.json({
-        sessionId: session.id,
-        // paymentIntentId: session.payment_intent,
-      });
-      // res.status(200).json(session);
+      // res.json({
+      //   sessionId: session.id,
+      //   // paymentIntentId: session.payment_intent,
+      // });
+      res.status(200).json(session);
     } catch (err: any) {
       res.status(err.statusCode || 500).json(err.message);
     }
