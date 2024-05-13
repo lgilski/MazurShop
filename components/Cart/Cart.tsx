@@ -99,6 +99,8 @@ function Cart() {
     const stripe = await getStripe();
     toast('Redirecting...');
 
+    // console.log('Sending request body:', itemsData);
+
     const response = await fetch('/api/stripe', {
       method: 'POST',
       headers: {
@@ -118,8 +120,11 @@ function Cart() {
     if (isEnoughtInInventory.some((item: boolean) => item === false))
       return toast.error('There are not enought items in inventory');
 
-    stripe.redirectToCheckout({ sessionId: data.id });
+    stripe.redirectToCheckout({
+      sessionId: data.id,
+    });
   };
+  // paymentIntentId: data.payment_intent,
 
   const totalCost = useMemo(
     () => calculateTotalCost(itemsData.includes(undefined) ? null : itemsData),
@@ -132,6 +137,13 @@ function Cart() {
 
   useEffect(() => {
     // Handle loading data from localStorage at the beginning
+
+    const cartItemsData = localStorage.getItem('cartItems');
+    if (!cartItemsData) return;
+
+    const cartItems = JSON.parse(cartItemsData);
+
+    dispatch(cartActions.setInitialCartItems(cartItems));
   }, []);
 
   return (

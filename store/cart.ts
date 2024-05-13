@@ -10,7 +10,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setInitialCart(state, action) {
+    setInitialCartItems(state, action) {
       state.items = action.payload;
     },
     addToCart(state, action) {
@@ -23,6 +23,9 @@ const cartSlice = createSlice({
           item => item.productId === action.payload.productId
         )!.quantity += Number(action.payload.quantity);
       }
+
+      // // Temporary
+      // localStorage.setItem('cartItems', JSON.stringify(state));
 
       return state;
     },
@@ -37,6 +40,9 @@ const cartSlice = createSlice({
       state.items.find(
         item => item.productId === action.payload.productId
       )!.quantity = action.payload.quantity;
+
+      // // Temporary
+      // localStorage.setItem('cartItems', JSON.stringify(state));
 
       return state;
     },

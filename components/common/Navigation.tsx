@@ -8,9 +8,13 @@ function Navigation() {
   const dispatch = useDispatch();
   const items = useSelector((state: WholeState) => state.cart.items);
 
+  console.log(items);
+
   const numberOfItems = items
-    .map(item => item.quantity)
-    .reduce((a, b) => Number(a) + Number(b), 0);
+    ? items
+        .map(item => item.quantity)
+        .reduce((a, b) => Number(a) + Number(b), 0)
+    : 0;
 
   return (
     <nav className='fixed w-full top-0 px-8 py-4 flex items-baseline justify-between shadow bg-white z-[3]'>
