@@ -13,6 +13,7 @@ export async function updateDocumentLeftInStock(_id: string, quantity: number) {
 }
 
 const handler = async (req: any, res: any) => {
+  console.log(req);
   if (req.type === 'checkout.session.completed') {
     try {
       const listLineItems = req.body.data?.object?.id
