@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'product',
@@ -34,7 +34,7 @@ export default defineType({
       name: 'categories',
       title: 'Categories',
       type: 'array',
-      of: [{ type: 'reference', to: { type: 'category' } }],
+      of: [defineArrayMember({ type: 'reference', to: { type: 'category' } })],
     }),
     defineField({
       name: 'shouldBeOnTheBest',
@@ -51,15 +51,15 @@ export default defineType({
       title: 'Details',
       type: 'string',
     }),
-    {
+    defineField({
       name: 'image',
       title: 'Image',
       type: 'array',
-      of: [{ type: 'image' }],
-      options: {
-        hotspot: true,
-      },
-    },
+      of: [defineArrayMember({ type: 'image' })],
+      // options: {
+      //   hotspot: true,
+      // },
+    }),
   ],
   orderings: [
     {
