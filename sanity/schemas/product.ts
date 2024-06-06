@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
-export default defineType({
+export const product = defineType({
   name: 'product',
   title: 'Product',
   type: 'document',
