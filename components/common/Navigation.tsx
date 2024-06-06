@@ -8,7 +8,7 @@ function Navigation() {
   const dispatch = useDispatch();
   const items = useSelector((state: WholeState) => state.cart.items);
 
-  console.log(items);
+  // console.log(items);
 
   const numberOfItems = items
     ? items
@@ -17,7 +17,7 @@ function Navigation() {
     : 0;
 
   return (
-    <nav className='fixed w-full top-0 px-8 py-4 flex items-baseline justify-between shadow bg-white z-[3]'>
+    <nav className='fixed w-full top-0 px-8 py-2 flex items-baseline justify-between shadow bg-white z-[3]'>
       <Link href='/' className='text-3xl font-bold justify-self-start w-40'>
         <Logo />
       </Link>
@@ -48,7 +48,7 @@ function Navigation() {
         >
           <ion-icon name='cart-outline' />
           {numberOfItems !== 0 && (
-            <div className='flex absolute w-6 h-6 bg-green-500 -bottom-2 -right-2 rounded-full text-green-50 items-center text-sm justify-center'>
+            <div className='flex absolute w-6 h-6 bg-green-500 -bottom-1 -right-2 rounded-full text-green-50 items-center text-sm justify-center'>
               {numberOfItems > 100 ? '+99' : numberOfItems}
             </div>
           )}

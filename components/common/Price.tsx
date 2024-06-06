@@ -4,7 +4,7 @@ function Price({ price, discount }: { price: number; discount: number }) {
     : null;
 
   return (
-    <p className={`text-xl font-semibold text-green-700`}>
+    <p className={`text-lg font-semibold text-green-700`}>
       <span
         className={`${priceAfterDiscount && 'line-through text-grey-500'} `}
       >

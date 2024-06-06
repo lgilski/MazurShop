@@ -45,8 +45,8 @@ function CartItem({ item }: { item: ItemType }) {
         </div>
         <div className='mt-auto mb-2 flex justify-between items-baseline'>
           <div className='flex items-baseline gap-1'>
-            <p className='text-xl font-medium'>Cena:</p>
-            <p className='text-3xl font-bold text-green-800 '>
+            <p className='text-2xl font-medium'>Cena:</p>
+            <p className='text-2xl font-bold text-green-800 '>
               {cost.toFixed(2)}zł
             </p>
           </div>

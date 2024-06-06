@@ -131,20 +131,20 @@ function Cart() {
     [itemsData]
   );
 
-  useEffect(() => {
-    console.log(productsData);
-  }, [productsData]);
+  // useEffect(() => {
+  //   console.log(productsData);
+  // }, [productsData]);
 
-  useEffect(() => {
-    // Handle loading data from localStorage at the beginning
+  // useEffect(() => {
+  //   // Handle loading data from localStorage at the beginning
 
-    const cartItemsData = localStorage.getItem('cartItems');
-    if (!cartItemsData) return;
+  //   const cartItemsData = localStorage.getItem('cartItems');
+  //   if (!cartItemsData) return;
 
-    const cartItems = JSON.parse(cartItemsData);
+  //   const cartItems = JSON.parse(cartItemsData);
 
-    dispatch(cartActions.setInitialCartItems(cartItems));
-  }, []);
+  //   dispatch(cartActions.setInitialCartItems(cartItems));
+  // }, []);
 
   return (
     <>
@@ -160,7 +160,12 @@ function Cart() {
           <ion-icon name='close-outline' />
         </button>
         {itemsData.length === 0 && (
-          <div>Nie ma żadnych produktów w Twoim koszyku.</div>
+          <div className='[&_ion-icon]:w-80 [&_ion-icon]:h-80 [&_ion-icon]:text-green-700 flex flex-col items-center justify-center h-full'>
+            <ion-icon name='cart' />
+            <p className='text-lg mt-6'>
+              Nie ma żadnych produktów w Twoim koszyku.
+            </p>
+          </div>
         )}
         {itemsData.length !== 0 && (
           <div className='flex flex-col gap-4'>
@@ -174,7 +179,7 @@ function Cart() {
           <div className='mt-12'>
             <p className='text-3xl mb-4 pt-4 border-t border-solid border-grey-300 '>
               Finalny koszt:{' '}
-              <span className='text-green-800 text-5xl font-bold'>
+              <span className='text-green-800 text-3xl font-bold'>
                 {totalCost?.toFixed(2)}zł
               </span>
             </p>

@@ -145,7 +145,7 @@ export default function Products({
               /> */}
             </div>
           </div>
-          <div className='mx-auto  grid w-full grid-cols-3 gap-16 max-xl:grid-cols-2 max-md:grid-cols-1'>
+          <div className='mx-auto grid w-full grid-cols-4 gap-16 max-xl:grid-cols-2 max-md:grid-cols-1'>
             {products.length > 0 &&
               products?.map((productData: ProductType) => {
                 if (

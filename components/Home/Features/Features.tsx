@@ -3,7 +3,7 @@ import Feature from './Feature';
 function Features() {
   return (
     <section className='max-w-7xl mx-auto  mb-8'>
-      <h5 className='text-5xl font-semibold text-green-900 mb-12'>
+      <h5 className='text-3xl font-semibold text-green-900 mb-12'>
         Co jest specjalnego w naszych produktach?
       </h5>
       <div className='grid grid-cols-4 gap-12 mx-6'>

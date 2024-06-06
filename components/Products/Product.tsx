@@ -70,7 +70,11 @@ export default function Product({ product }: { product: ProductType }) {
   }, []);
 
   return (
-    <div className='flex flex-col bg-white-100 relative w-full mx-auto rounded-xl overflow-hidden shadow-xl box-border border-2 border-solid border-grey-100'>
+    <Link
+      onClick={saveLastSeen}
+      href={product.slug.current}
+      className='flex flex-col bg-white-100 relative w-full mx-auto rounded-xl overflow-hidden shadow-xl box-border border-2 border-solid border-grey-100 cursor-pointer hover:-translate-y-1 duration-300 hover:border-green-500'
+    >
       <Image
         alt=''
         className='aspect-square block object-cover'
@@ -81,19 +85,13 @@ export default function Product({ product }: { product: ProductType }) {
         style={{ width: '100%', height: 'auto' }}
       />
       {product.discount && (
-        <p className='absolute flex w-16 h-16 items-center justify-center top-2 right-2 text-xl font-medium p-1 bg-purple-200 text-purple-900 rounded-full'>
+        <p className='absolute flex w-14 h-14 items-center justify-center top-2 right-2 text-lg font-medium p-1 bg-purple-200 text-purple-900 rounded-full'>
           -{product.discount}%
         </p>
       )}
       <div className='p-4 flex flex-col flex-grow bg-white'>
         <div className='mb-2'>
-          <Link
-            onClick={saveLastSeen}
-            href={product.slug.current}
-            className='text-2xl font-semibold hover:text-green-700 duration-100'
-          >
-            {product.name}
-          </Link>
+          <h6 className='text-xl font-semibold'>{product.name}</h6>
           <div className='flex items-baseline justify-between'>
             <Price discount={product.discount} price={product.price} />
             <p className='font-medium'>
@@ -103,12 +101,12 @@ export default function Product({ product }: { product: ProductType }) {
             </p>
           </div>
         </div>
-        <div className='flex justify-between gap-4 mt-auto pt-8'>
+        {/* <div className='flex justify-between gap-4 mt-auto pt-8'>
           <SelectQuantity ref={ref} product={product} />
           <button
             onClick={handleAddToCart}
             disabled={product.leftInStock <= 0 ? true : false}
-            className={`text-xl flex-grow  px-4 py-2 rounded-full duration-200 ${
+            className={`text-xl flex-grow px-4 py-2 rounded-full duration-200 ${
               product.leftInStock <= 0
                 ? 'bg-gray-300 hover:bg-gray-300 text-gray-500'
                 : 'bg-green-700 text-green-050 hover:bg-green-500'
@@ -116,8 +114,8 @@ export default function Product({ product }: { product: ProductType }) {
           >
             Dodaj do koszyka
           </button>
-        </div>
+        </div> */}
       </div>
-    </div>
+    </Link>
   );
 }

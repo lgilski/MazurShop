@@ -42,25 +42,5 @@ export default function ProductDetailsPage({
 }: {
   product: ProductType;
 }) {
-  // const dispatch = useDispatch();
-
-  // client
-  //   .fetch(
-  //     groq`*[_type == "product" && defined(slug.current)]{
-  //   image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
-  // }`
-  //   )
-  //   .then(data => dispatch(productActions.setProducts(data)));
-
-  // client
-  //   .listen(
-  //     groq`*[_type == "product" && defined(slug.current)][0]{
-  //   image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id, 'categories': categories[]->{title, _id}
-  // }`
-  //   )
-  //   .subscribe(async update => {
-  //     dispatch(productActions.updateProducts(update));
-  //   });
-
   return <ProductDetails product={product} />;
 }
