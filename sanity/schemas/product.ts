@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
 export const product = defineType({
