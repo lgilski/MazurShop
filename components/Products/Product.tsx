@@ -62,6 +62,8 @@ export default function Product({ product }: { product: ProductType }) {
     }
   };
 
+  // a
+
   useEffect(() => {
     const elements = JSON.parse(localStorage.getItem('lastSeen') || '{}');
     if (elements) {
