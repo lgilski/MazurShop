@@ -38,8 +38,8 @@ export default async function captureFounds(req: any, res: any) {
             (product: any) => product.name === boughtItem.description
           );
 
-          // return boughtItemData.leftInStock - boughtItem.quantity > 0;
-          return { a: boughtItemData.leftInStock, b: boughtItem.quantity };
+          return boughtItemData.leftInStock - boughtItem.quantity > 0;
+          // return { a: boughtItemData.leftInStock, b: boughtItem.quantity };
         });
 
       console.log('areItemsAvailable:', areItemsAvailable);
