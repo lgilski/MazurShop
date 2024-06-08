@@ -22,7 +22,7 @@ export default async function captureFounds(req: any, res: any) {
       );
 
       // console.log('paymentIntentCheckout: ', paymentIntentCheckout);
-      console.log('paymentIntentCheckout: ', paymentIntentCheckout.id);
+      // console.log('paymentIntentCheckout: ', paymentIntentCheckout.id);
 
       const listLineItems = req.body.data?.object?.id
         ? await stripe.checkout.session.listLineItems(paymentIntentCheckout.id)
