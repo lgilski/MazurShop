@@ -15,7 +15,7 @@ export default async function captureFounds(req: any, res: any) {
       // console.log('Sessions: ', sessions.data);
 
       const paymentIntentCheckout = sessions.data.find(
-        (session: any) => session.payment_intent === req.body.id
+        (session: any) => session.payment_intent === req.body.object.id
       );
 
       console.log('paymentIntentCheckout: ', paymentIntentCheckout);
