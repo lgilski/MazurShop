@@ -27,7 +27,7 @@ export default async function captureFounds(req: any, res: any) {
       const listItems = req.body.data?.object?.id
         ? await stripe.checkout.sessions.listLineItems(paymentIntentCheckout.id)
         : null;
-      console.log('listItems:', listItems);
+      // console.log('listItems:', listItems);
 
       const data = await clientRead.fetch(productsDetailsQuery);
 
@@ -38,11 +38,11 @@ export default async function captureFounds(req: any, res: any) {
             (product: any) => product.name === boughtItem.description
           );
 
-          // return boughtItemData.leftInStock - boughtItem.qantity > 0;
-          return { a: boughtItemData.leftInStock, b: boughtItem.qantity };
+          return boughtItemData.leftInStock - boughtItem.quantity > 0;
+          // return { a: boughtItemData.leftInStock, b: boughtItem.quantity };
         });
 
-      // console.log('areItemsAvailable:', areItemsAvailable);
+      console.log('areItemsAvailable:', areItemsAvailable);
 
       // if (areItemsAvailable.every((element: any) => element === true)) {
       //   await stripe.paymentIntents.capture(req.id, {
