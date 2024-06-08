@@ -10,7 +10,7 @@ export default async function captureFounds(req: any, res: any) {
         limit: 2,
       });
 
-      console.log('Req object: ', req.body.object);
+      console.log('Req object: ', req.body.json());
 
       console.log('Sessions: ', sessions.data);
 
