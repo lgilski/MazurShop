@@ -10,6 +10,7 @@ import getStripe from '@/helpers/getStripe';
 import calculatePrice from '@/helpers/calculatePrice';
 import { clientRead } from '@/sanity/lib/client';
 import { allProductsQuery, productsDetailsQuery } from '@/api/queries';
+import { redirect } from 'next/navigation';
 
 function useProductsDetails() {
   const [productsData, setProductsData] = useState<ProductType[]>();
@@ -98,9 +99,7 @@ function Cart() {
   const handleCheckout = async function () {
     const stripe = await getStripe();
     toast('Redirecting...');
-
     // console.log('Sending request body:', itemsData);
-
     const response = await fetch('/api/stripe', {
       method: 'POST',
       headers: {
@@ -110,16 +109,13 @@ function Cart() {
     });
 
     if (response.status === 500) return;
-
     const data = await response.json();
-
     const isEnoughtInInventory: boolean[] = itemsData.map(
       (item: ItemType) => item.product.leftInStock >= item.quantity
     );
 
     if (isEnoughtInInventory.some((item: boolean) => item === false))
       return toast.error('There are not enought items in inventory');
-
     stripe.redirectToCheckout({
       sessionId: data.id,
     });

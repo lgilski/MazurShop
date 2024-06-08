@@ -33,12 +33,12 @@ export const product = defineType({
       description: 'Type only the number',
       type: 'number',
     }),
-    {
+    defineField({
       name: 'categories',
       title: 'Categories',
-      type: 'reference',
-      to: [{ type: 'category' }],
-    },
+      type: 'array',
+      of: [{ type: 'reference', to: { type: 'category' } }],
+    }),
     defineField({
       name: 'shouldBeOnTheBest',
       title: 'Should be on the best?',
@@ -59,9 +59,9 @@ export const product = defineType({
       title: 'Image',
       type: 'array',
       of: [defineArrayMember({ type: 'image' })],
-      // options: {
-      //   hotspot: true,
-      // },
+      options: {
+        hotspot: true,
+      },
     }),
   ],
   orderings: [
