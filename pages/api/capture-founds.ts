@@ -42,15 +42,15 @@ export default async function captureFounds(req: any, res: any) {
           // return { a: boughtItemData.leftInStock, b: boughtItem.quantity };
         });
 
-      console.log('areItemsAvailable:', areItemsAvailable);
+      // console.log('areItemsAvailable:', areItemsAvailable);
 
-      // if (areItemsAvailable.every((element: any) => element === true)) {
-      //   await stripe.paymentIntents.capture(req.id, {
-      //     amount_to_capture: req.amount,
-      //   });
-      // } else {
-      //   await stripe.paymentIntents.cancel(req.id);
-      // }
+      if (areItemsAvailable.every((element: any) => element === true)) {
+        await stripe.paymentIntents.capture(req.id, {
+          amount_to_capture: req.amount,
+        });
+      } else {
+        await stripe.paymentIntents.cancel(req.id);
+      }
 
       res.status(200);
     } catch (error: any) {
