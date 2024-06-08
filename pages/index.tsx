@@ -17,7 +17,6 @@ import {
   newestToysQuery,
   productsDetailsQuery,
 } from '@/api/queries';
-import EmbeddedCheckoutButton from '@/components/EmbeddedCheckoutForm';
 
 export const getStaticProps = async () => {
   const data = await clientRead.fetch(productsDetailsQuery);
@@ -46,7 +45,6 @@ export default function Home({
       </Head>
       {/* <Cart products={data} /> */}
       <Hero />
-      {/* <EmbeddedCheckoutButton /> */}
 
       <BestProducts products={data} />
       <Features />
