@@ -51,6 +51,36 @@ export default async function handler(req: any, res: any) {
             quantity: item.quantity,
           };
         }),
+        metadata: {
+          line_items: req.body.map((item: ItemType) => {
+            const img = item.product.image[0].asset._ref;
+            const newImage = img
+              .replace(
+                'image-',
+                'https://cdn.sanity.io/images/rwsjsahd/production/'
+              )
+              .replace('-webp', '.webp')
+              .replace('-jpg', '.jpg');
+
+            const priceToDisplay =
+              calculatePrice({
+                discount: item.product.discount,
+                price: item.product.price,
+              }) * 100;
+
+            return {
+              price_data: {
+                currency: 'pln',
+                product_data: {
+                  name: item.product.name,
+                  images: [newImage],
+                },
+                unit_amount: priceToDisplay,
+              },
+              quantity: item.quantity,
+            };
+          }),
+        },
         // expires_at: Math.floor(Date.now() / 1000) + 2,
         mode: 'payment',
         payment_intent_data: {

@@ -7,9 +7,7 @@ export default async function captureFounds(req: any, res: any) {
   if (req.method === 'POST') {
     try {
       const listLineItems = req.body.data?.object?.id
-        ? await stripe.checkout.sessions.listLineItems(
-            req.body.data?.object?.id
-          )
+        ? await stripe.paymentIntents.listLineItems(req.body.data?.object?.id)
         : null;
 
       const data = await clientRead.fetch(productsDetailsQuery);
