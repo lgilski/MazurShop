@@ -7,12 +7,14 @@ export default async function captureFounds(req: any, res: any) {
   if (req.method === 'POST') {
     try {
       const sessions = await stripe.checkout.sessions.list({
-        limit: 1,
+        limit: 2,
       });
+
+      console.log('Req data object: ', req.data.object);
 
       console.log('Sessions: ', sessions.data);
 
-      const paymentIntentCheckout = await sessions.find(
+      const paymentIntentCheckout = await sessions.data.find(
         (session: any) => session.payment_intent === req.data.object.id
       );
 
