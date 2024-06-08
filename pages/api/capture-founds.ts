@@ -10,15 +10,15 @@ export default async function captureFounds(req: any, res: any) {
         limit: 2,
       });
 
-      console.log('Req data object: ', req.data.object);
+      console.log('Req data object: ', req.data);
 
       console.log('Sessions: ', sessions.data);
 
-      const paymentIntentCheckout = await sessions.data.find(
-        (session: any) => session.payment_intent === req.data.object.id
-      );
+      // const paymentIntentCheckout = sessions.data.find(
+      //   (session: any) => session.payment_intent === req.data.object.id
+      // );
 
-      console.log('paymentIntentCheckout: ', paymentIntentCheckout);
+      // console.log('paymentIntentCheckout: ', paymentIntentCheckout);
 
       // const listLineItems = req.body.data?.object?.id
       //   ? stripe.checkout.session.listLineItems(paymentIntentCheckout.data?.id)
