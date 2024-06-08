@@ -19,8 +19,7 @@ const handler = async (req: any, res: any) => {
     });
 
     const paymentIntentCheckout = sessions.data.find(
-      (session: any) =>
-        session.payment_intent === req.body.data.object.payment_intent
+      (session: any) => session.payment_intent === req.body.id
     );
 
     try {
@@ -36,13 +35,15 @@ const handler = async (req: any, res: any) => {
             (product: any) => product.name === boughtItem.description
           );
 
+          console.log(boughtItemData, boughtItem.quantity);
+
           await updateDocumentLeftInStock(
             boughtItemData._id,
             boughtItem.quantity
           );
         });
 
-      // event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
+      res.status(200);
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
