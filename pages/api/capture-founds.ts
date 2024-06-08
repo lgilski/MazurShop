@@ -24,16 +24,16 @@ export default async function captureFounds(req: any, res: any) {
       // console.log('paymentIntentCheckout: ', paymentIntentCheckout);
       // console.log('paymentIntentCheckout: ', paymentIntentCheckout.id);
 
-      const listLineItems = req.body.data?.object?.id
-        ? await stripe.checkout.session.listLineItems(paymentIntentCheckout.id)
+      const listItems = req.body.data?.object?.id
+        ? await stripe.checkout.sessions.listLineItems(paymentIntentCheckout.id)
         : null;
-      console.log('listLineItems:', listLineItems);
+      console.log('listItems:', listItems);
 
       // const data = await clientRead.fetch(productsDetailsQuery);
 
       // const areItemsAvailable =
-      //   listLineItems &&
-      //   listLineItems?.data.forEach(async (boughtItem: any) => {
+      //   listItems &&
+      //   listItems?.data.forEach(async (boughtItem: any) => {
       //     const boughtItemData = data.find(
       //       (product: any) => product.name === boughtItem.description
       //     );
