@@ -29,17 +29,10 @@ const handler = async (req: any, res: any) => {
 
       const data = await clientRead.fetch(productsDetailsQuery);
 
-      listLineItems &&
-        listLineItems?.data.map(async (boughtItem: any) => {
-          const boughtItemData = data.find(
-            (product: any) => product.name === boughtItem.description
-          );
-
-          console.log(boughtItem, boughtItemData);
-        });
+      console.log(listLineItems.data, data);
 
       listLineItems &&
-        listLineItems?.data.map(async (boughtItem: any) => {
+        listLineItems?.data.forEach(async (boughtItem: any) => {
           const boughtItemData = data.find(
             (product: any) => product.name === boughtItem.description
           );
