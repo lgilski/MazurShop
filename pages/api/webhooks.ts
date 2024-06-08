@@ -9,6 +9,8 @@ export async function updateDocumentLeftInStock(_id: string, quantity: number) {
     .dec({ leftInStock: quantity })
     .commit();
 
+  console.log('Updated!! ', result);
+
   return result;
 }
 
@@ -27,13 +29,13 @@ const handler = async (req: any, res: any) => {
         ? await stripe.checkout.sessions.listLineItems(paymentIntentCheckout.id)
         : null;
 
-      const data = await clientRead.fetch(productsDetailsQuery);
+      const allProductsData = await clientRead.fetch(productsDetailsQuery);
 
-      console.log(listLineItems);
+      // console.log(listLineItems);
 
       listLineItems &&
         listLineItems?.data.forEach(async (boughtItem: any) => {
-          const boughtItemData = data.find(
+          const boughtItemData = allProductsData.find(
             (product: any) => product.name === boughtItem.description
           );
 
