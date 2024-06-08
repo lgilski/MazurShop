@@ -19,7 +19,7 @@ const handler = async (req: any, res: any) => {
     });
 
     const paymentIntentCheckout = sessions.data.find(
-      (session: any) => session.payment_intent === req.body.id
+      (session: any) => session.payment_intent === req.body.data.object.id
     );
 
     try {
