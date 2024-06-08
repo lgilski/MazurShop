@@ -35,6 +35,15 @@ const handler = async (req: any, res: any) => {
             (product: any) => product.name === boughtItem.description
           );
 
+          console.log(boughtItem, boughtItemData);
+        });
+
+      listLineItems &&
+        listLineItems?.data.map(async (boughtItem: any) => {
+          const boughtItemData = data.find(
+            (product: any) => product.name === boughtItem.description
+          );
+
           await updateDocumentLeftInStock(
             boughtItemData._id,
             boughtItem.quantity
