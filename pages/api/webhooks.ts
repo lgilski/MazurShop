@@ -9,7 +9,7 @@ export async function updateDocumentLeftInStock(_id: string, quantity: number) {
     .dec({ leftInStock: quantity })
     .commit();
 
-  console.log('Updated!! ', result);
+  console.log('Updated!! ', _id, quantity);
 
   return result;
 }
