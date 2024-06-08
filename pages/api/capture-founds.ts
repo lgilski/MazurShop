@@ -29,7 +29,7 @@ export default async function captureFounds(req: any, res: any) {
           amount_to_capture: req.amount,
         });
       } else {
-        await stripe.paymentIntents.cancel('req.id');
+        await stripe.paymentIntents.cancel(req.id);
       }
     } catch (error: any) {
       res.status(400).send(`Webhook Error: ${error.message}`);
