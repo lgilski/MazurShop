@@ -41,7 +41,10 @@ export default async function captureFounds(req: any, res: any) {
           return boughtItemData.leftInStock - boughtItem.quantity > 0;
         });
 
-      if (areItemsAvailable.every((element: any) => element === true)) {
+      if (
+        areItemsAvailable &&
+        areItemsAvailable.every((element: any) => element === true)
+      ) {
         await stripe.paymentIntents.capture(req.body.data.object.id, {
           amount_to_capture: req.body.data.object.amount,
         });

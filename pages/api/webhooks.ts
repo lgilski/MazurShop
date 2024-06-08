@@ -21,7 +21,7 @@ const handler = async (req: any, res: any) => {
     });
 
     const paymentIntentCheckout = sessions.data.find(
-      (session: any) => session.payment_intent === req.body.data.object.id
+      (session: any) => session.payment_intent === req.body.data?.object.id
     );
 
     try {
@@ -34,7 +34,7 @@ const handler = async (req: any, res: any) => {
       // console.log(listLineItems);
 
       listLineItems &&
-        listLineItems?.data.forEach(async (boughtItem: any) => {
+        listLineItems?.data.map(async (boughtItem: any) => {
           const boughtItemData = allProductsData.find(
             (product: any) => product.name === boughtItem.description
           );
@@ -45,7 +45,7 @@ const handler = async (req: any, res: any) => {
           );
         });
 
-      res.status(200);
+      // res.status(200);
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
