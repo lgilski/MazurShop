@@ -10,9 +10,12 @@ export default async function captureFounds(req: any, res: any) {
         limit: 2,
       });
 
-      console.log('Req object: ', req.body.object.id);
+      console.log('Req object: ', req.body.object);
 
       console.log('Sessions: ', sessions.data);
+
+      // console.log(sessions.data[0].payment_intent, req.body.object.id);
+      // console.log(sessions.data[1].payment_intent, req.body.object.id);
 
       const paymentIntentCheckout = sessions.data.find(
         (session: any) => session.payment_intent === req.body.object.id
