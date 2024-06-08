@@ -43,7 +43,7 @@ export default async function captureFounds(req: any, res: any) {
         await stripe.paymentIntents.cancel(req.id);
       }
     } catch (error: any) {
-      res.status(400).send(`Webhook Error: ${error.message}`);
+      res.status(400).send(`Webhook Error: ${error}`);
       return;
     }
     res.json({ received: true });
