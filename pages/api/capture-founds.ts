@@ -12,38 +12,40 @@ export default async function captureFounds(req: any, res: any) {
 
       console.log(sessions);
 
-      const paymentIntentCheckout = await sessions.data.find(
-        (session: any) => session.payment_intent === req.data.object.id
-      );
+      // const paymentIntentCheckout = await sessions.data.find(
+      //   (session: any) => session.payment_intent === req.data.object.id
+      // );
 
-      console.log('paymentIntentCheckout: ', paymentIntentCheckout);
+      // console.log('paymentIntentCheckout: ', paymentIntentCheckout);
 
-      const listLineItems = req.body.data?.object?.id
-        ? stripe.checkout.session.listLineItems(paymentIntentCheckout.data?.id)
-        : null;
-      console.log('listLineItems:', listLineItems);
+      // const listLineItems = req.body.data?.object?.id
+      //   ? stripe.checkout.session.listLineItems(paymentIntentCheckout.data?.id)
+      //   : null;
+      // console.log('listLineItems:', listLineItems);
 
-      const data = await clientRead.fetch(productsDetailsQuery);
+      // const data = await clientRead.fetch(productsDetailsQuery);
 
-      const areItemsAvailable =
-        listLineItems &&
-        listLineItems?.data.forEach(async (boughtItem: any) => {
-          const boughtItemData = data.find(
-            (product: any) => product.name === boughtItem.description
-          );
+      // const areItemsAvailable =
+      //   listLineItems &&
+      //   listLineItems?.data.forEach(async (boughtItem: any) => {
+      //     const boughtItemData = data.find(
+      //       (product: any) => product.name === boughtItem.description
+      //     );
 
-          return boughtItemData.leftInStock - boughtItem.qantity > 0;
-        });
+      //     return boughtItemData.leftInStock - boughtItem.qantity > 0;
+      //   });
 
-      console.log('areItemsAvailable:', areItemsAvailable);
+      // console.log('areItemsAvailable:', areItemsAvailable);
 
-      if (areItemsAvailable.every((element: any) => element === true)) {
-        await stripe.paymentIntents.capture(req.id, {
-          amount_to_capture: req.amount,
-        });
-      } else {
-        await stripe.paymentIntents.cancel(req.id);
-      }
+      // if (areItemsAvailable.every((element: any) => element === true)) {
+      //   await stripe.paymentIntents.capture(req.id, {
+      //     amount_to_capture: req.amount,
+      //   });
+      // } else {
+      //   await stripe.paymentIntents.cancel(req.id);
+      // }
+
+      res.status(200);
     } catch (error: any) {
       res.status(400).send(`Webhook Error: ${error}`);
       return;
