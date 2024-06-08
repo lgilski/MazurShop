@@ -29,7 +29,7 @@ const handler = async (req: any, res: any) => {
 
       const data = await clientRead.fetch(productsDetailsQuery);
 
-      console.log(listLineItems, data);
+      console.log(listLineItems);
 
       listLineItems &&
         listLineItems?.data.forEach(async (boughtItem: any) => {
