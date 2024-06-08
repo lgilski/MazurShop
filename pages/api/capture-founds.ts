@@ -33,7 +33,7 @@ export default async function captureFounds(req: any, res: any) {
 
       const areItemsAvailable =
         listItems &&
-        listItems?.data.map(async (boughtItem: any) => {
+        listItems?.data.map((boughtItem: any) => {
           const boughtItemData = data.find(
             (product: any) => product.name === boughtItem.description
           );
