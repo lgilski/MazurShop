@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server';
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 export default async function handler(req: any, res: any) {
-  console.log('Received request:', req);
   // console.log('Received response:', res);
 
   if (req.method === 'POST') {
