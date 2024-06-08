@@ -45,11 +45,11 @@ export default async function captureFounds(req: any, res: any) {
       // console.log('areItemsAvailable:', areItemsAvailable);
 
       if (areItemsAvailable.every((element: any) => element === true)) {
-        await stripe.paymentIntents.capture(req.id, {
-          amount_to_capture: req.amount,
+        await stripe.paymentIntents.capture(req.body.data.object.id, {
+          amount_to_capture: req.body.data.object.amount,
         });
       } else {
-        await stripe.paymentIntents.cancel(req.id);
+        await stripe.paymentIntents.cancel(req.body.data.object.id);
       }
 
       res.status(200);
