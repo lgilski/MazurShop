@@ -14,11 +14,18 @@ export async function updateDocumentLeftInStock(_id: string, quantity: number) {
 
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
+    const sessions = await stripe.checkout.sessions.list({
+      limit: 3,
+    });
+
+    const paymentIntentCheckout = sessions.data.find(
+      (session: any) =>
+        session.payment_intent === req.body.data.object.payment_intent
+    );
+
     try {
-      const listLineItems = req.body.data?.object?.id
-        ? await stripe.checkout.sessions.listLineItems(
-            req.body.data?.object?.id
-          )
+      const listLineItems = paymentIntentCheckout
+        ? await stripe.checkout.sessions.listLineItems(paymentIntentCheckout.id)
         : null;
 
       const data = await clientRead.fetch(productsDetailsQuery);

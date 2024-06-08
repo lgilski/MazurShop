@@ -7,7 +7,7 @@ export default async function captureFounds(req: any, res: any) {
   if (req.method === 'POST') {
     try {
       const sessions = await stripe.checkout.sessions.list({
-        limit: 2,
+        limit: 3,
       });
 
       // console.log('Req object: ', req.body);
@@ -24,7 +24,7 @@ export default async function captureFounds(req: any, res: any) {
       // console.log('paymentIntentCheckout: ', paymentIntentCheckout);
       // console.log('paymentIntentCheckout: ', paymentIntentCheckout.id);
 
-      const listItems = req.body.data?.object?.id
+      const listItems = paymentIntentCheckout
         ? await stripe.checkout.sessions.listLineItems(paymentIntentCheckout.id)
         : null;
       // console.log('listItems:', listItems);
@@ -39,10 +39,7 @@ export default async function captureFounds(req: any, res: any) {
           );
 
           return boughtItemData.leftInStock - boughtItem.quantity > 0;
-          // return { a: boughtItemData.leftInStock, b: boughtItem.quantity };
         });
-
-      // console.log('areItemsAvailable:', areItemsAvailable);
 
       if (areItemsAvailable.every((element: any) => element === true)) {
         await stripe.paymentIntents.capture(req.body.data.object.id, {
