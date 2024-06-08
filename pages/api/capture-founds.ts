@@ -10,9 +10,9 @@ export default async function captureFounds(req: any, res: any) {
         limit: 2,
       });
 
-      console.log('Req object: ', req.body.json());
+      console.log('Req object: ', req.body);
 
-      console.log('Sessions: ', sessions.data);
+      // console.log('Sessions: ', sessions.data);
 
       // console.log(sessions.data[0].payment_intent, req.body.object.id);
       // console.log(sessions.data[1].payment_intent, req.body.object.id);
@@ -21,7 +21,7 @@ export default async function captureFounds(req: any, res: any) {
         (session: any) => session.payment_intent === req.body.object.id
       );
 
-      console.log('paymentIntentCheckout: ', paymentIntentCheckout);
+      // console.log('paymentIntentCheckout: ', paymentIntentCheckout);
 
       // const listLineItems = req.body.data?.object?.id
       //   ? stripe.checkout.session.listLineItems(paymentIntentCheckout.data?.id)
