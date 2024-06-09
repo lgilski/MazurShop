@@ -17,7 +17,7 @@ export async function updateDocumentLeftInStock(_id: string, quantity: number) {
 const handler = async (req: any, res: any) => {
   if (req.method === 'POST') {
     const sessions = await stripe.checkout.sessions.list({
-      limit: 3,
+      limit: 15,
     });
 
     const paymentIntentCheckout = sessions.data.find(
