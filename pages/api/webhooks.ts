@@ -15,6 +15,8 @@ const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 // }
 
 const handler = async (req: any, res: any) => {
+  console.log('Req body: ', req.body);
+
   if (req.method === 'POST') {
     try {
       const sessions = await stripe.checkout.sessions.list({
@@ -52,7 +54,7 @@ const handler = async (req: any, res: any) => {
 
       // console.log(update);
 
-      // res.status(200);
+      res.status(200);
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
