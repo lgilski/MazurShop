@@ -33,21 +33,24 @@ const handler = async (req: any, res: any) => {
 
       // console.log(listLineItems);
 
-      const update =
-        listLineItems &&
-        listLineItems?.data.map(async (boughtItem: any) => {
+      listLineItems &&
+        listLineItems?.data.forEach(async (boughtItem: any) => {
           const boughtItemData = allProductsData.find(
             (product: any) => product.name === boughtItem.description
           );
 
-          const updatedDocument = await updateDocumentLeftInStock(
-            boughtItemData._id,
-            boughtItem.quantity
-          );
-          return updatedDocument;
+          await client
+            .patch(boughtItemData._id)
+            .dec({ leftInStock: boughtItem.quantity })
+            .commit();
+
+          // await updateDocumentLeftInStock(
+          //   boughtItemData._id,
+          //   boughtItem.quantity
+          // );
         });
 
-      console.log(update);
+      // console.log(update);
 
       // res.status(200);
     } catch (err: any) {
