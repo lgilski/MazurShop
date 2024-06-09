@@ -40,10 +40,11 @@ const handler = async (req: any, res: any) => {
             (product: any) => product.name === boughtItem.description
           );
 
-          return await updateDocumentLeftInStock(
+          const updatedDocument = await updateDocumentLeftInStock(
             boughtItemData._id,
             boughtItem.quantity
           );
+          return updatedDocument;
         });
 
       console.log(update);
