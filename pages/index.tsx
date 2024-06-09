@@ -27,7 +27,7 @@ export const getStaticProps = async () => {
 
   return {
     props: { data, newestToysData, newestFoodData },
-    revalidate: 1,
+    revalidate: 2,
   };
 };
 
