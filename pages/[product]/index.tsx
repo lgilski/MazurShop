@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { groq } from 'next-sanity';
 import { client, clientRead } from '../../sanity/lib/client';
 import ProductDetails from '@/components/Products/ProductDetails';
@@ -21,7 +21,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }`
   );
 
-  return { paths, fallback: 'blocking' };
+  return { paths, fallback: true };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       product,
     },
-    revalidate: 2,
+    revalidate: 1,
   };
 };
 
