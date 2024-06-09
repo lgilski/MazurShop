@@ -1,5 +1,5 @@
 import { groq } from 'next-sanity';
-import { clientRead } from '@/sanity/lib/client';
+import { client, clientRead } from '@/sanity/lib/client';
 import Head from 'next/head';
 import Hero from '@/components/Home/Hero';
 import Features from '@/components/Home/Features/Features';
@@ -17,6 +17,8 @@ import {
   newestToysQuery,
   productsDetailsQuery,
 } from '@/api/queries';
+import { productActions } from '@/store/product';
+import { useDispatch } from 'react-redux';
 
 export const getStaticProps = async () => {
   const data = await clientRead.fetch(productsDetailsQuery);
@@ -38,6 +40,16 @@ export default function Home({
   newestToysData: ProductType[];
   newestFoodData: ProductType[];
 }) {
+  // const dispatch = useDispatch();
+
+  // dispatch(productActions.setProducts(data));
+
+  // client.listen(productsDetailsQuery).subscribe(async update => {
+  //   // console.log(update);
+
+  //   dispatch(productActions.updateProducts(update));
+  // });
+
   return (
     <>
       <Head>

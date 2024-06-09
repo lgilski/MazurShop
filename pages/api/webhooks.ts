@@ -33,17 +33,20 @@ const handler = async (req: any, res: any) => {
 
       // console.log(listLineItems);
 
-      listLineItems &&
+      const update =
+        listLineItems &&
         listLineItems?.data.map(async (boughtItem: any) => {
           const boughtItemData = allProductsData.find(
             (product: any) => product.name === boughtItem.description
           );
 
-          await updateDocumentLeftInStock(
+          return await updateDocumentLeftInStock(
             boughtItemData._id,
             boughtItem.quantity
           );
         });
+
+      console.log(update);
 
       // res.status(200);
     } catch (err: any) {
