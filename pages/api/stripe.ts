@@ -57,8 +57,8 @@ export default async function handler(req: any, res: any) {
         },
         // return_url: `${req.headers.get('origin')}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
         // return_url: `http://localhost:3000/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
-        success_url: `${req.headers.origin}/?success=true`,
-        cancel_url: `${req.headers.origin}/?canceled=true`,
+        success_url: `${req.headers.origin}/`,
+        cancel_url: `${req.headers.origin}/`,
       });
 
       res.status(200).json(session);

@@ -5,7 +5,7 @@ import Hero from '@/components/Home/Hero';
 import Features from '@/components/Home/Features/Features';
 import BuyNowSection from '@/components/Home/BuyNowSection';
 import BestProducts from '@/components/Home/BestProducts';
-import { ProductType } from '@/types/types';
+import { ProductState, ProductType } from '@/types/types';
 import LastSeen from '@/components/Home/LastSeen';
 import NewestToys from '@/components/Home/NewestToys';
 import About from '@/components/Home/About';
@@ -18,7 +18,8 @@ import {
   productsDetailsQuery,
 } from '@/api/queries';
 import { productActions } from '@/store/product';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const getStaticProps = async () => {
   const data = await clientRead.fetch(productsDetailsQuery);
@@ -40,15 +41,36 @@ export default function Home({
   newestToysData: ProductType[];
   newestFoodData: ProductType[];
 }) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const products = useSelector((state: ProductState) => state.products);
+
+  clientRead
+    .fetch(
+      groq`*[_type == "product" && defined(slug.current)]{
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`
+    )
+    .then(data => dispatch(productActions.setProducts(data)));
+
+  // console.log(data);
 
   // dispatch(productActions.setProducts(data));
 
-  // client.listen(productsDetailsQuery).subscribe(async update => {
-  //   // console.log(update);
+  clientRead
+    .listen(
+      groq`*[_type == "product" && defined(slug.current)]{
+    image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
+  }`
+    )
+    .subscribe(async update => {
+      // console.log(update);
 
-  //   dispatch(productActions.updateProducts(update));
-  // });
+      dispatch(productActions.updateProducts(update));
+    });
+
+  // useEffect(() => {
+  //   console.log(products);
+  // }, [products]);
 
   return (
     <>
