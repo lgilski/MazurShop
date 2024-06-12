@@ -41,7 +41,7 @@ export default async function captureFounds(req: any, res: any) {
           return boughtItemData.leftInStock - boughtItem.quantity >= 0;
         });
 
-      console.log(areItemsAvailable);
+      // console.log(areItemsAvailable);
 
       if (
         areItemsAvailable &&
