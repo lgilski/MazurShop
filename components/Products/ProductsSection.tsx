@@ -3,7 +3,7 @@ function ProductsSection({
   title,
 }: { title: string } & React.PropsWithChildren<{}>) {
   return (
-    <section className='max-w-7xl mx-auto my-16'>
+    <section className='max-w-7xl mx-auto my-12'>
       <h4 className='text-3xl text-center mb-8 font-bold text-green-900'>
         {title}
       </h4>
