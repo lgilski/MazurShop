@@ -151,9 +151,13 @@ export default function Products({
               />
             </div>
           </div>
-          {productsToDisplay.length <= 0 && (
-            <div className='mx-auto grid w-full grid-cols-4 gap-16 '>
-              <div className='flex flex-col items-center col-span-4 mt-16'>
+          <div className='mx-auto grid w-full grid-cols-4 gap-16 max-xl:grid-cols-2 max-md:grid-cols-1'>
+            {productsToDisplay.length > 0 &&
+              productsToDisplay?.map((productData: ProductType) => (
+                <Product key={productData?.name} product={productData} />
+              ))}
+            {productsToDisplay.length <= 0 && (
+              <div className='flex flex-col items-center col-span-4'>
                 <svg
                   className='text-green-700 bg-green-200 p-3 rounded-full'
                   width='120'
@@ -167,21 +171,14 @@ export default function Products({
                     fill='currentColor'
                     fill-rule='evenodd'
                     clip-rule='evenodd'
-                  ></path>
+                  />
                 </svg>
                 <p className='w-80 text-center mt-4'>
                   Nie znaleziono produktów, które spełniałyby te wyszukiwanie.
                 </p>
               </div>
-            </div>
-          )}
-          {productsToDisplay.length > 0 && (
-            <div className='mx-auto grid w-full grid-cols-4 gap-16 max-xl:grid-cols-2 max-md:grid-cols-1'>
-              {productsToDisplay?.map((productData: ProductType) => (
-                <Product key={productData?.name} product={productData} />
-              ))}
-            </div>
-          )}
+            )}
+          </div>
         </section>
       )}
     </>
