@@ -4,6 +4,12 @@ import Link from 'next/link';
 function Footer() {
   return (
     <footer className='bg-grey-050 mt-auto border-t-2 border-grey-100 py-12'>
+      <div className='text-center flex gap-2 justify-center [&_ion-icon]:text-cool-grey-600 [&_ion-icon]:w-6 [&_ion-icon]:h-6 [&_ion-icon]:duration-300 hover:[&_ion-icon]:text-cool-grey-800 pb-8'>
+        <p>This app was made by lgilski for learning purposes.</p>
+        <Link href='https://github.com/lgilski/MazurShop'>
+          <ion-icon name='logo-github' />
+        </Link>
+      </div>
       <nav className='max-w-5xl mx-auto grid grid-cols-4 gap-12 [&_h6]:text-xl [&_h6]:font-medium [&_h6]:mb-6 [&_li]:text-grey-700'>
         <nav className='flex flex-col'>
           <Logo className='text-2xl' />

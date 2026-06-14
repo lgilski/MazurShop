@@ -5,11 +5,10 @@ function BuyNowSection() {
     <section className='bg-green-800 py-24'>
       <div className='max-w-5xl mx-auto text-center'>
         <h5 className='text-4xl font-semibold text-green-050 mb-6 text-center'>
-          Uszczęśliw swoje zwierzęta!
+          Nie czekaj!
         </h5>
         <p className='text-xl font-medium max-w-2xl mx-auto text-green-100 mb-8'>
-          Z nami zabierzesz zdrowie oraz radość swoich zwierzaków na następny
-          poziom. Jesteś gotów?
+          Zacznij kupować lepsze jakościowo produkty razem z MazurShop już dziś!
         </p>
         <Link
           href={'/produkty'}

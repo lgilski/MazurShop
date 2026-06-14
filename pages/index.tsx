@@ -7,39 +7,40 @@ import BuyNowSection from '@/components/Home/BuyNowSection';
 import BestProducts from '@/components/Home/BestProducts';
 import { ProductState, ProductType } from '@/types/types';
 import LastSeen from '@/components/Home/LastSeen';
-import NewestToys from '@/components/Home/NewestToys';
 import About from '@/components/Home/About';
 import ShippingSection from '@/components/Home/ShippingSection';
 import QuoteSection from '@/components/Home/QuoteSection';
-import NewestFood from '@/components/Home/NewestFood';
+import NewestFood from '@/components/Home/NewestKatTwo';
 import {
-  newestFoodQuery,
-  newestToysQuery,
+  newestKatTwoQuery,
+  newestKatOneQuery,
   productsDetailsQuery,
 } from '@/api/queries';
 import { productActions } from '@/store/product';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import NewestKatOne from '@/components/Home/NewestKatOne';
+import NewestKatTwo from '@/components/Home/NewestKatTwo';
 
 export const getStaticProps = async () => {
   const data = await clientRead.fetch(productsDetailsQuery);
-  const newestToysData = await clientRead.fetch(newestToysQuery);
-  const newestFoodData = await clientRead.fetch(newestFoodQuery);
+  const newestKatOneData = await clientRead.fetch(newestKatOneQuery);
+  const newestKatTwoData = await clientRead.fetch(newestKatTwoQuery);
 
   return {
-    props: { data, newestToysData, newestFoodData },
+    props: { data, newestKatOneData, newestKatTwoData },
     revalidate: 2,
   };
 };
 
 export default function Home({
   data,
-  newestToysData,
-  newestFoodData,
+  newestKatOneData,
+  newestKatTwoData,
 }: {
   data: ProductType[];
-  newestToysData: ProductType[];
-  newestFoodData: ProductType[];
+  newestKatOneData: ProductType[];
+  newestKatTwoData: ProductType[];
 }) {
   const dispatch = useDispatch();
   const products = useSelector((state: ProductState) => state.products);
@@ -48,29 +49,19 @@ export default function Home({
     .fetch(
       groq`*[_type == "product" && defined(slug.current)]{
     image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-  }`
+  }`,
     )
     .then(data => dispatch(productActions.setProducts(data)));
-
-  // console.log(data);
-
-  // dispatch(productActions.setProducts(data));
 
   clientRead
     .listen(
       groq`*[_type == "product" && defined(slug.current)]{
     image, details, leftInStock, name, price, discount, slug, shouldBeOnTheBest, _id
-  }`
+  }`,
     )
     .subscribe(async update => {
-      // console.log(update);
-
       dispatch(productActions.updateProducts(update));
     });
-
-  // useEffect(() => {
-  //   console.log(products);
-  // }, [products]);
 
   return (
     <>
@@ -81,10 +72,10 @@ export default function Home({
       <Hero />
 
       <BestProducts products={data} />
-      <Features />
+      {/* <Features /> */}
       <LastSeen products={data} />
-      <NewestToys newestToysData={newestToysData} />
-      <NewestFood newestFoodData={newestFoodData} />
+      <NewestKatOne newestKatOneData={newestKatOneData} />
+      <NewestKatTwo newestKatTwoData={newestKatTwoData} />
       {/* <QuoteSection /> */}
       {/* <About />
       <ShippingSection /> */}

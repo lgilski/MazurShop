@@ -7,15 +7,15 @@ function Hero() {
   return (
     // bg-hero-image
     // linear-gradient(to right top, #05400ABF, #207227BF) bg-fixed bg-cover bg-center h-[700px]
-    <section className='bg-gradient-to-tr from-[#05400ABF] to-[#207227BF] h-[550px] bg-fixed bg-cover bg-center w-full mt-[52px]'>
-      <div className='max-w-7xl h-full flex items-center justify-between m-auto'>
+    <section className='bg-gradient-to-tr from-[#05400ABF] to-[#207227BF] h-[460px] bg-fixed bg-cover bg-center w-full mt-[52px]'>
+      <div className='max-w-7xl h-full flex items-center justify-center m-auto'>
         {/* max-w-4xl */}
-        <div className='max-w-2xl text-left'>
+        <div className='max-w-2xl text-center'>
           <h2 className='text-5xl text-white font-extrabold mb-6'>
-            Tutaj możesz kupić wszystko potrzebne dla zwierząt!
+            Tutaj możesz kupić wszystko czego potrzebujesz!
           </h2>
           <p className='text-xl text-green-050 mb-8'>
-            Oferujemy wiele zdrowych smakołyków i zabawek.
+            Oferujemy wiele produktów wysokiej jakości
           </p>
           <Link
             href={'/produkty'}
@@ -23,16 +23,6 @@ function Hero() {
           >
             Kupuj teraz
           </Link>
-        </div>
-        <div className='relative after:content-[""] after:bg-gradient-to-tr after:from-[#05400ABF] after:to-[#207227BF] after:absolute after:top-0 after:left-0 after:block after:w-full after:h-full rounded-lg overflow-hidden w-[550px] after:opacity-60'>
-          <Image
-            src={image}
-            width={550}
-            // fill={true}
-            // height={200}
-            alt=''
-            className=' aspect-video object-cover '
-          />
         </div>
       </div>
     </section>

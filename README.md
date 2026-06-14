@@ -20,7 +20,6 @@ The project demonstrates several e-commerce features, including:
 - Search and navigation for categories and goods
 - Cart management with quantity selection
 - Checkout flow using Stripe
-- Responsive layout for desktop and mobile
 - Content managed through Sanity studio
 
 ## Tech Stack

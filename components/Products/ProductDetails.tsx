@@ -30,8 +30,11 @@ function ProductDetails({ product }: { product: ProductType }) {
   return (
     <>
       {product && (
-        <div key={product.name} className='max-w-7xl  mx-auto mb-16 mt-32 '>
-          <section className='grid grid-cols-[2fr_1fr] gap-8 items-start'>
+        <div
+          key={product.name}
+          className='w-[1280px] mx-auto mb-16 mt-32 max-xl:w-full max-xl:max-w-7xl'
+        >
+          <section className='grid grid-cols-[2fr_1fr] gap-8 items-start max-w-full'>
             <div className='flex flex-col max-w-full bg-white rounded-2xl p-4  shadow-md'>
               <Image
                 alt=''
