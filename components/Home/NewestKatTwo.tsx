@@ -8,7 +8,7 @@ function NewestKatTwo({
   newestKatTwoData: ProductType[];
 }) {
   return (
-    <ProductsSection title='Najnowsze karmy'>
+    <ProductsSection title='Najnowsze z Kategorii 2'>
       {newestKatTwoData.map(product => (
         <Product key={product.name} product={product} />
       ))}
